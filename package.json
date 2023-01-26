@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "craco tsc && vite build",
-    "preview": "craco vite preview",
+    "preview": "craco vite preview"
+  },
   "dependencies": {
     "@loadable/component": "^5.15.2",
     "antd": "^5.1.4",

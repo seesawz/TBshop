@@ -49,14 +49,11 @@
 }
 .navtitle{
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 400;
 }
-ul span{
-    margin-left: 10px;
-    font-size: 13px;
-    color: #666;
-}
+
 .navlist *:hover{
+    font-weight: 300;
     color: orange;
     cursor: pointer;
 }

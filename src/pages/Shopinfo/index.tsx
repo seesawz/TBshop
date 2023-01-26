@@ -4,6 +4,8 @@ import logo from '@/assets/react.svg'
 import { EditOutlined,MenuOutlined} from '@ant-design/icons';
 import { Input,Affix,Carousel,Button,Modal} from 'antd';
 import Shopitem from "@/pages/Shopitem";
+import Signin from "@/pages/Signin";
+import { useproThemeContext } from "@/theme/hooks";
 
 const Index = () => {
   const [searchWords,setSearchWords] = useState('')
@@ -16,6 +18,15 @@ const Index = () => {
     '女鞋'
   ])
   const [modal2Open, setModal2Open] = useState(false);
+  const { isLogin,setIsLogin } = useproThemeContext()!
+  const showUserLogin = () => {
+    setIsLogin(true)
+    setModal2Open(true)
+  }
+  const showUserLoginForin = () => {
+    setIsLogin(false)
+    setModal2Open(true)
+  }
   useEffect(() => {
       setSearchWords(tipWords[Math.round(Math.random()* 4) ])
   },[])
@@ -29,15 +40,16 @@ const Index = () => {
   return (
     <div className={styles.shopinfo}>
       <Modal
-        title="Vertically centered modal dialog"
+        title="请先登录"
         centered
+        destroyOnClose={true}
         open={modal2Open}
+        footer={null}
         onOk={() => setModal2Open(false)}
         onCancel={() => setModal2Open(false)}
+        width={350}
       >
-        <p>some contents...</p>
-        <p>some contents...</p>
-        <p>some contents...</p>
+        <Signin></Signin>
       </Modal>
       <br/><br/>
       <header className={styles.header}>
@@ -155,8 +167,8 @@ const Index = () => {
                   <br/>
                   <br/><br/>
                   <div style={{display:'flex',justifyContent:'space-evenly'}}>
-                    <Button size="large" type="primary" danger onClick={()=>{setModal2Open(true)}}>登录</Button>
-                    <Button size="large" type="primary" danger>注册</Button>
+                    <Button size="large" type="primary" danger onClick={showUserLogin}>登录</Button>
+                    <Button size="large" type="primary" danger onClick={showUserLoginForin}>注册</Button>
                   </div>
                 </div>
               </div>

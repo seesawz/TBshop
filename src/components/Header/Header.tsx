@@ -1,29 +1,53 @@
 import React, { useState } from "react";
 import styles from './Header.module.css'
-import { Modal } from 'antd';
+import { Modal,notification } from 'antd';
+import { useproThemeContext } from "@/theme/hooks";
+import Signin from "@/pages/Signin";
 const Header = () => {
   const [modal2Open, setModal2Open] = useState(false);
+  const { isLogin,setIsLogin } = useproThemeContext()!
+  const [api, contextHolder] = notification.useNotification();
+
+  const showLogin = () => {
+    //如果没有登录就先登录，如果登录了就跳转个人中心
+    setIsLogin(true)
+    setModal2Open(true)
+  }
+  const register = () => {
+    setIsLogin(false)
+    setModal2Open(true)
+  }
+  const openNotificationWithIcon = () => {
+    api['warning']({
+      message: '客服功能暂未上线',
+      description:
+        '抱歉 客服功能暂未上线，您可以在后续更新中了解到更多信息。',
+    });
+  };
+
   return (
     <div className={styles.head}>
+      {contextHolder}
       <Modal
-        title="Vertically centered modal dialog"
+        title="请先登录"
         centered
+        destroyOnClose={true}
         open={modal2Open}
+        footer={null}
         onOk={() => setModal2Open(false)}
         onCancel={() => setModal2Open(false)}
+        width={350}
       >
-        <p>some contents...</p>
-        <p>some contents...</p>
-        <p>some contents...</p>
+        <Signin></Signin>
       </Modal>
       <div className={styles.headertitle}>
         {/*如果没有登录则弹出登录界面*/}
        <div style={{flex:1}}></div>
         <div style={{flex:1,marginLeft:'600px'}}>
-          <span onClick={()=>{setModal2Open(true)}}>我的</span>
+          <span onClick={showLogin}>我的</span>
           <span>购物车</span>
-          <span>免费注册</span>
-          <span>联系客服</span>
+          <span onClick={register}>免费注册</span>
+          <span onClick={openNotificationWithIcon}>联系客服</span>
         </div>
       </div>
       <div className={styles.content}>
