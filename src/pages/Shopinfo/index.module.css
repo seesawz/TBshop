@@ -1,0 +1,104 @@
+.header{
+    height: 150px;
+    width: 100%;
+}
+.search{
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    background-color: white;
+    margin-top: -10px;
+    border-radius: 20px;
+}
+.tipWords{
+    margin-top: -55px;
+    margin-left: -23px;
+    position: absolute;
+    list-style: none;
+    display: flex;
+}
+.tipWords li{
+    font-size: 12px;
+    margin-left: 5px;
+    color: #666;
+}
+.tipWords li:hover{
+    color: orange;
+    cursor: pointer;
+}
+.shopinfo{
+    background-color: white;
+    width: 80%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+}
+.nav{
+    width: 100%;
+    height: 300px;
+    display: flex;
+}
+.navinfo{
+    width: 280px;
+    height: 400px;
+    border-radius: 10px;
+    margin-left: 15px;
+    background-color: #f7f9fa;
+}
+.navtitle{
+    font-size: 20px;
+    font-weight: 500;
+}
+ul span{
+    margin-left: 10px;
+    font-size: 13px;
+    color: #666;
+}
+.navlist *:hover{
+    color: orange;
+    cursor: pointer;
+}
+.ulitem{
+    margin-bottom: 17px;
+    margin-left: 10px;
+    font-size: 13px;
+    color: #666;
+}
+.navrighttop{
+    width: 90%;
+    height: 50px;
+    background-color: #f7f9fa;
+    border-radius: 15px;
+    line-height: 50px;
+    margin-right:100px;
+    box-sizing: border-box;
+}
+.navrighttop span {
+    margin-left: 20px;
+    color: #666;
+}
+.navrighttop span:hover{
+    color: orange;
+    cursor: pointer;
+}
+.slidercontent{
+    display: flex;
+    margin-top: 20px;
+}
+.carsour{
+    height: 330px;
+    width: 700px;
+}
+.logininfo{
+    width: 20%;
+    text-align: center;
+    padding-top: 100px;
+    margin-left: -100px;
+}
+.shopitem{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
