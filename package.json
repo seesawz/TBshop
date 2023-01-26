@@ -7,8 +7,6 @@
     "dev": "vite",
     "build": "craco tsc && vite build",
     "preview": "craco vite preview",
-    "json-server": "json-server __json_server_mock__/db.json --port 9132 --middlewares __json_server_mock__/middleWare.cjs  "
-  },
   "dependencies": {
     "@loadable/component": "^5.15.2",
     "antd": "^5.1.4",
