@@ -3,6 +3,9 @@ import React from "react";
 import { useproThemeContext } from "./theme/hooks";
 import myThemes from "./theme/index";
 import { StyleProvider } from "@ant-design/cssinjs";
+import {
+  Router,
+} from 'react-router-dom'
 import "antd/dist/reset.css";
 import MyRouter from "@/router";
 const themeIndex = () => {
@@ -22,8 +25,6 @@ const themeIndex = () => {
         input={{ autoComplete: "off" }}
       >
         {/* 路由 */}
-        <MyRouter
-        ></MyRouter>
       </ConfigProvider>
     </StyleProvider>
   );
