@@ -9,6 +9,13 @@ type ContextType = {
   //此处是为了做登录按钮登录态的处理
   isLogin : boolean,
   setIsLogin :(status:boolean)=>void
+  //登录模态框的隐藏处理
+  isLoginShow:boolean,
+  setLoginShow:(status:boolean)=>void 
+  //全局用户信息
+  userInfo:any,
+  setUserInfo:(userInfo:any)=>void
+
 };
 
 //定义主题context
@@ -23,14 +30,19 @@ const ProThemeProvider = ({ children }: any) => {
   //等同于
   const [myTheme, setMyTheme] = useState(defaultTheme);
   const [isLogin,setIsLogin] = useState(true)
-
+  const [isLoginShow,setLoginShow]=useState(false)
+  const [userInfo,setUserInfo]=useState({})
   return (
     <ProThemeContext.Provider
       value={{
         myTheme,
         setMyTheme,
         isLogin,
-        setIsLogin
+        setIsLogin,
+        isLoginShow,
+        setLoginShow,
+        userInfo,
+        setUserInfo
       }}
     >
       {children}

@@ -1,17 +1,22 @@
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider, theme, message } from "antd";
 import React from "react";
 import { useproThemeContext } from "./theme/hooks";
 import myThemes from "./theme/index";
 import { StyleProvider } from "@ant-design/cssinjs";
-import {
-  Router,
-} from 'react-router-dom'
-import "antd/dist/reset.css";
-import MyRouter from "@/router";
+import type { NoticeType } from "antd/es/message/interface";
+
 const themeIndex = () => {
   const { myTheme } = useproThemeContext() as any;
+  const [messageApi, contextHolder] = message.useMessage()
+  const info = (type:NoticeType,msg:string) => {
+    messageApi.open({
+      type,
+      content:msg
+    })
+  }
   return (
-    //主题配置
+    <>
+  {/*  {contextHolder}
     <StyleProvider hashPriority="high">
       <ConfigProvider
         theme={{
@@ -24,9 +29,9 @@ const themeIndex = () => {
         componentSize="middle"
         input={{ autoComplete: "off" }}
       >
-        {/* 路由 */}
       </ConfigProvider>
-    </StyleProvider>
+    </StyleProvider> */}
+    </>
   );
 };
 export default themeIndex;

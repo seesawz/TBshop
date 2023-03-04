@@ -7,19 +7,21 @@ import Header from '@/components/Header/Header'
 import Footer from '@/components/Footer/Footer'
 import Shopinfo from '@/pages/Shopinfo'
 import Detail from '@/pages/Detail'
-import styles from './index.module.css'
-import { Container, Navbar, Nav } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
+import { message } from 'antd';
+import { ConfigProvider } from 'antd';
+import type { NoticeType } from "antd/es/message/interface";
 import {
   createBrowserRouter,
-  RouterProvider,
-  NavLink,
   useLocation,
   useOutlet,
 } from 'react-router-dom'
+import UserCenter from '@/pages/userCenter'
 
 const routes = [
   { path: '/', name: 'Home', element: <Shopinfo />, nodeRef: createRef() },
   { path: '/detail', name: 'detail', element: <Detail />, nodeRef: createRef() },
+  { path: '/userCenter', name: 'usercenter', element: <UserCenter></UserCenter>, nodeRef: createRef() },
 ]
 /*  const MyRouter = () => (
     <div style={{ backgroundColor: '#dededd' }} className={styles.bg}>
@@ -37,13 +39,22 @@ const routes = [
 ) */
 
 function Example() {
+  const [messageApi, contextHolder] = message.useMessage()
+  const info = (type:NoticeType,msg:string) => {
+    messageApi.open({
+      type,
+      content:msg
+    })
+  }
   const location = useLocation()
   const currentOutlet = useOutlet()
   const { nodeRef } =
     routes.find((route) => route.path === location.pathname) ?? {}
   return (
     <>
-      <Header></Header>
+    {contextHolder}
+   <ConfigProvider>
+      <Header info={info}></Header>
       <Container >
         <SwitchTransition>
           <CSSTransition
@@ -62,6 +73,7 @@ function Example() {
         </SwitchTransition>
       </Container>
       <Footer></Footer>
+      </ ConfigProvider>  
     </>
   )
 }
