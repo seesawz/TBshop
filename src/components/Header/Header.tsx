@@ -46,7 +46,9 @@ const Header = (props:any) => {
             description: '抱歉 客服功能暂未上线，您可以在后续更新中了解到更多信息。'
         })
     }
-
+    const toCart = () => {
+        navigate('cart')
+    }
     return (
         
         <div className={styles.head}>
@@ -71,7 +73,7 @@ const Header = (props:any) => {
                         <span onClick={showLogin}><UserOutlined />我的</span>
                     </Tooltip>
                     <Tooltip placement="bottomRight" title={"购物车"}>
-                    <span><ShoppingCartOutlined />购物车</span>
+                    <span onClick={toCart}><ShoppingCartOutlined />购物车</span>
                     </Tooltip>
                     <Tooltip placement="bottomRight" title={"免费注册"}>
                     <span onClick={register}> <IssuesCloseOutlined />免费注册</span>

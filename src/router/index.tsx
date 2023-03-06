@@ -11,6 +11,7 @@ import { Container } from 'react-bootstrap'
 import { message } from 'antd';
 import { ConfigProvider } from 'antd';
 import type { NoticeType } from "antd/es/message/interface";
+import Cart from '@/pages/cart'
 import {
   createBrowserRouter,
   useLocation,
@@ -21,7 +22,8 @@ import UserCenter from '@/pages/userCenter'
 const routes = [
   { path: '/', name: 'Home', element: <Shopinfo />, nodeRef: createRef() },
   { path: '/detail', name: 'detail', element: <Detail />, nodeRef: createRef() },
-  { path: '/userCenter', name: 'usercenter', element: <UserCenter></UserCenter>, nodeRef: createRef() },
+  { path: '/userCenter', name: 'usercenter', element: <UserCenter/>, nodeRef: createRef() },
+  { path: '/cart', name: 'cart', element: <Cart/>, nodeRef: createRef() },
 ]
 /*  const MyRouter = () => (
     <div style={{ backgroundColor: '#dededd' }} className={styles.bg}>
