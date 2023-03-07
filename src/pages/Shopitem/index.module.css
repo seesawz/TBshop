@@ -15,6 +15,7 @@
     position: absolute;
     margin-left: 10px;
     margin-top: 10px;
+    object-fit: cover;
 }
 .shoptitle{
     position: absolute;

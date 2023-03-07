@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from './Header.module.css'
 import { Modal, notification,Tooltip,Breadcrumb } from 'antd'
-import { UserOutlined, ShoppingCartOutlined, IssuesCloseOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { UserOutlined, ShoppingCartOutlined, IssuesCloseOutlined, QuestionCircleOutlined,HomeOutlined } from '@ant-design/icons';
 import { useproThemeContext } from '@/theme/hooks'
 import Signin from '@/pages/Signin'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -67,7 +67,11 @@ const Header = (props:any) => {
             </Modal>
             <div className={styles.headertitle}>
                 {/*如果没有登录则弹出登录界面*/}
-                <div className='flex-1'></div>
+                <div className='flex-1 justify-start'>
+                <Tooltip placement="bottomRight" title={"主页"}>
+                <HomeOutlined onClick={()=>navigate('/')} />
+                </Tooltip>
+                </div>
                 <div className='flex-1 flex justify-end mr-10'>
                     <Tooltip placement="bottomRight" title={"我的"}>
                         <span onClick={showLogin}><UserOutlined />我的</span>

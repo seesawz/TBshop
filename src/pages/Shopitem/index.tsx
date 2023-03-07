@@ -1,78 +1,52 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './index.module.css'
 import { useNavigate } from 'react-router-dom'
+import type { Page } from '@/utils/type'
+import { selectGoodsInfoByUser } from '@/api'
+import type { Goods } from '@/utils/type'
 const Index = () => {
+
     const navigator = useNavigate()
-    const toShopDetail = () => {
-        navigator('/detail')
+    const toShopDetail = (item:Goods) => {
+        navigator(`/detail?id=${item.goodsId}`)
     }
-    type Shop = {
-        img: string
-        price: string | number
-        title: string
-    }
-    const [shopList, setShopList] = useState<Shop[]>([
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: `泽塔奥特特曼升华器变换声光变身器儿童玩具黑暗`
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
-        },
-        {
-            img: 'https://gw.alicdn.com/bao/uploaded/i2/2201049392895/O1CN01zJM6E71XFxPeNsEKP_!!0-item_pic.jpg_300x300q90.jpg_.webp',
-            price: '49.4',
-            title: '泽塔奥特特曼升华器变换\n' + '声光变身器儿童玩具黑暗'
+   
+    
+    const [page, setPage] = useState<Page>({
+        pageNo: 1,
+        pageSize: 9,
+        total: 0
+    })
+    const [shopList, setShopList] = useState<Goods[]>([])
+    const [isBottom,setIsBottom] = useState<boolean>(false)
+    const getGoods = async () => {
+        const result = await selectGoodsInfoByUser(page)
+        if (result.code === 0) {
+            setShopList(result.data.data)
+            setPage({...page,total:result.data.total})
+            if(result.data.data.length!== page.pageSize){
+                setIsBottom(true)
+            }
         }
-    ])
+    }
+
+    useEffect(()=>{
+     
+        getGoods()
+    },[page.pageSize])
+    useEffect(()=>{
+        window.addEventListener("scroll",()=>{
+           // document.body.scrollHeight 滚动条高度
+           //当前滚动条位置document.documentElement.scrollTop
+           //用当前滚动条位置+视口高度去对于是否等于滚动条高度就能判断是否到底部
+           const scrollHeight:number = document.body.scrollHeight
+           const curTop:number = document.documentElement.scrollTop 
+            if( (document.body.offsetHeight + curTop) >= (scrollHeight-100)){
+                setPage({...page,pageSize:page.pageSize+9})
+            }
+        })      
+    },[])
+
     return (
         <div>
             <br />
@@ -87,12 +61,15 @@ const Index = () => {
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'start' }}>
                 {shopList.map((item, idx) => (
-                    <div onClick={toShopDetail} key={idx} className={styles.shoplist}>
-                        <img className={styles.img} src={item.img} alt="" />
-                        <p className={styles.shoptitle}>{item.title}</p>
+                    <div onClick={()=>toShopDetail(item)} key={idx} className={styles.shoplist}>
+                        <img className={styles.img}  src={`http://43.139.230.109:9002/img/${item.spuImgUrl.split("/").at(-1)}`} alt="" />
+                        <p className={styles.shoptitle}>{item.spuName}</p>
                         <p className={styles.shopprice}>¥{item.price}</p>
                     </div>
                 ))}
+            </div>
+            <div className='flex justify-center mt-15 color-gray-500'>
+              { isBottom && <h4>没有更多了</h4>}  
             </div>
         </div>
     )

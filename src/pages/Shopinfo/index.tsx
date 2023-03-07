@@ -7,6 +7,8 @@ import Shopitem from "@/pages/Shopitem";
 import Signin from "@/pages/Signin";
 import { useproThemeContext } from "@/theme/hooks";
 
+import { getToken } from '@/utils/token'
+
 const Index = () => {
   const [searchWords,setSearchWords] = useState('')
   const [top, setTop] = useState(10);
@@ -18,6 +20,9 @@ const Index = () => {
     '女鞋'
   ])
   const [modal2Open, setModal2Open] = useState(false);
+
+  const [token,setToken] = useState<string>('')
+ 
   const { isLogin,setIsLogin } = useproThemeContext()!
   const showUserLogin = () => {
     setIsLogin(true)
@@ -29,6 +34,7 @@ const Index = () => {
   }
   useEffect(() => {
       setSearchWords(tipWords[Math.round(Math.random()* 4) ])
+      setToken(getToken() as string)
   },[])
   const searchShop = (value: string) => {
     console.log(value);
@@ -37,6 +43,8 @@ const Index = () => {
     height:'330px',
     width:'600px'
   };
+
+
   return (
     <div className={styles.shopinfo}>
       <Modal
@@ -162,7 +170,7 @@ const Index = () => {
                     </Carousel>
                   </div>
                 </div>
-                <div style={{flexGrow:'1'}} className={styles.logininfo}>
+               {token?.length === 0 ?  <div style={{flexGrow:'1'}} className={styles.logininfo}>
                   <p>Hi 你好</p>
                   <br/>
                   <br/><br/>
@@ -170,7 +178,9 @@ const Index = () => {
                     <Button size="large" type="primary" danger onClick={showUserLogin}>登录</Button>
                     <Button size="large" type="primary" danger onClick={showUserLoginForin}>注册</Button>
                   </div>
-                </div>
+                </div>:
+                <div>已登录</div>
+                }
               </div>
           </div>
         </div>

@@ -26,10 +26,10 @@ const hyRequest = new HYRequest({
 
         responseInterceptor: (config) => {
             const {data} = config
-            if(data.code === 1 && data.message === '登录过期，请重新登录'){
+            if(data.code === 1 && data.message === '用户未登录'){
                 resetToken()
                 alert("登录过期，请重新登录")
-                window.location.reload()
+                window.location.href='/'
             }
             return config
 
