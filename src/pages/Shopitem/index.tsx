@@ -59,7 +59,7 @@ const Index = () => {
                     alt=""
                 />
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'start' }}>
+            <div className='flex justify-around flex-wrap'>
                 {shopList.map((item, idx) => (
                     <div onClick={()=>toShopDetail(item)} key={idx} className={styles.shoplist}>
                         <img className={styles.img}  src={`http://43.139.230.109:9002/img/${item.spuImgUrl.split("/").at(-1)}`} alt="" />

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styles from './Header.module.css'
-import { Modal, notification,Tooltip,Breadcrumb } from 'antd'
+import { Modal, notification,Tooltip } from 'antd'
 import { UserOutlined, ShoppingCartOutlined, IssuesCloseOutlined, QuestionCircleOutlined,HomeOutlined } from '@ant-design/icons';
 import { useproThemeContext } from '@/theme/hooks'
 import Signin from '@/pages/Signin'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getToken } from '@/utils/token';
+import { getToken, resetToken } from '@/utils/token';
+import {userLogout} from '@/api/index'
 const Header = (props:any) => {
     const {info} = props
     const {isLoginShow,setLoginShow} = useproThemeContext()!
@@ -49,6 +50,13 @@ const Header = (props:any) => {
     const toCart = () => {
         navigate('cart')
     }
+    const Logout = async() => {
+        const result = await userLogout()
+        if(result.code === 0){
+            resetToken()
+            window.location.reload()
+        }
+    }
     return (
         
         <div className={styles.head}>
@@ -69,7 +77,7 @@ const Header = (props:any) => {
                 {/*如果没有登录则弹出登录界面*/}
                 <div className='flex-1 justify-start'>
                 <Tooltip placement="bottomRight" title={"主页"}>
-                <HomeOutlined onClick={()=>navigate('/')} />
+                    <span onClick={()=>navigate('/')}><HomeOutlined />主页</span>
                 </Tooltip>
                 </div>
                 <div className='flex-1 flex justify-end mr-10'>
@@ -85,6 +93,7 @@ const Header = (props:any) => {
                     <Tooltip placement="bottomRight" title={"联系客服"}>
                     <span onClick={openNotificationWithIcon}><QuestionCircleOutlined />联系客服</span>
                     </Tooltip>
+                    <span  onClick={Logout}>&nbsp;&nbsp;退出登录</span>
                 </div>
             </div>
             {isHome ? (<div className={styles.content}>

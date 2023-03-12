@@ -18,12 +18,16 @@ import {
   useOutlet,
 } from 'react-router-dom'
 import UserCenter from '@/pages/userCenter'
+import Pay from '@/pages/Pay'
+import SearchList from '@/pages/SearchList/index'
 
 const routes = [
   { path: '/', name: 'Home', element: <Shopinfo />, nodeRef: createRef() },
   { path: '/detail', name: 'detail', element: <Detail />, nodeRef: createRef() },
   { path: '/userCenter', name: 'usercenter', element: <UserCenter/>, nodeRef: createRef() },
   { path: '/cart', name: 'cart', element: <Cart/>, nodeRef: createRef() },
+  { path: '/pay', name: 'pay', element: <Pay/>, nodeRef: createRef() },
+  { path: '/search', name: 'search', element: <SearchList/>, nodeRef: createRef() },
 ]
 /*  const MyRouter = () => (
     <div style={{ backgroundColor: '#dededd' }} className={styles.bg}>

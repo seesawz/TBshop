@@ -104,6 +104,9 @@ class HYRequest {
     patch<T>(config: HYRequestConfig<T>): Promise<T> {
         return this.request<T>({ ...config, method: 'PATCH' })
     }
+    put<T>(config: HYRequestConfig<T>): Promise<T> {
+        return this.request<T>({ ...config, method: 'PUT' })
+    }
 }
 
 export default HYRequest

@@ -1,12 +1,11 @@
-import { message } from 'antd';
 import HYRequest from './request'
 
-import { BASE_URL, TIME_OUT } from './request/config'
+import { TIME_OUT } from './request/config'
 
 import { getToken,resetToken } from '@/utils/token'
-const hyRequest = new HYRequest({
+const hyRequest2 = new HYRequest({
 
-    baseURL: BASE_URL,
+    baseURL: 'http://43.139.230.109:9002',
 
     timeout: TIME_OUT,
 
@@ -29,7 +28,7 @@ const hyRequest = new HYRequest({
             const {data} = config
             if(data.code === 1 && data.message === '用户未登录'){
                 resetToken()
-                message.info("登录过期，请重新登录")
+                alert("登录过期，请重新登录")
                 window.location.href='/'
             }
             return config
@@ -45,4 +44,4 @@ const hyRequest = new HYRequest({
 })
 
 
-export default hyRequest
+export default hyRequest2
