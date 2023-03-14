@@ -3,12 +3,14 @@ import styles from './Header.module.css'
 import { Modal, notification,Tooltip } from 'antd'
 import { UserOutlined, ShoppingCartOutlined, IssuesCloseOutlined, QuestionCircleOutlined,HomeOutlined } from '@ant-design/icons';
 import { useproThemeContext } from '@/theme/hooks'
-import Signin from '@/pages/Signin'
+import img1 from '@/assets/12/headerbg1.png'
+import img2 from '@/assets/12/headerbg2.png'
+import img3 from '@/assets/12/headerbg3.png'
+import img4 from '@/assets/12/headerbg4.png'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getToken, resetToken } from '@/utils/token';
 import {userLogout} from '@/api/index'
-const Header = (props:any) => {
-    const {info} = props
+const Header = () => {
     const {isLoginShow,setLoginShow} = useproThemeContext()!
     const [isHome, setIsHome] = useState(true)
 
@@ -32,14 +34,13 @@ const Header = (props:any) => {
             navigate('/userCenter')
             return 
         }
-        setIsLogin(true)
-        setLoginShow(true)
+        navigate('/login')
         //通过是否有token判断是否登录
     }
     //注册
     const register = () => {
         setIsLogin(false)
-        setLoginShow(true)
+        navigate('/login')
     }
     const openNotificationWithIcon = () => {
         api['warning']({
@@ -61,18 +62,6 @@ const Header = (props:any) => {
         
         <div className={styles.head}>
             {contextHolder}
-            <Modal
-                title={isLogin ?'登录':'注册'}
-                centered
-                destroyOnClose={true}
-                open={isLoginShow}
-                footer={null}
-                onOk={() => setLoginShow(false)}
-                onCancel={() => setLoginShow(false)}
-                width={370}
-            >
-                <Signin info={info}></Signin>
-            </Modal>
             <div className={styles.headertitle}>
                 {/*如果没有登录则弹出登录界面*/}
                 <div className='flex-1 justify-start'>
@@ -98,22 +87,22 @@ const Header = (props:any) => {
             </div>
             {isHome ? (<div className={styles.content}>
                 <div>
-                    <img src="src/assets/headerbg1.png" alt="" />
-                    <span className={styles.bannertitle}>小炒盖饭</span>
-                    <span className={styles.bannerinfo}>罗俊真的爱吃</span>
+                    <img src={img1} alt="" />
+                    <span className={styles.bannertitle}>个性假发</span>
+                    <span className={styles.bannerinfo}>随性自由搭配</span>
                 </div>
                 <div>
-                    <img src="src/assets/headerbg2.png" alt="" />
+                    <img src={img2} alt="" />
                     <span className={styles.bannertitle}>商业办公</span>
                     <span className={styles.bannerinfo}>价格真的实惠</span>
                 </div>
                 <div>
-                    <img src="src/assets/headerbg3.png" alt="" />
+                    <img src={img3}  alt="" />
                     <span className={styles.bannertitle}>商业办公</span>
                     <span className={styles.bannerinfo}>价格真的实惠</span>
                 </div>
                 <div>
-                    <img src="src/assets/headerbg4.png" alt="" />
+                    <img src={img4}  alt="" />
                     <span className={styles.bannertitle}>商业办公</span>
                     <span className={styles.bannerinfo}>价格真的实惠</span>
                 </div>

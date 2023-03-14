@@ -1,15 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from './index.module.css'
 import logo from '@/assets/react.svg'
-import { EditOutlined, MenuOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { Input, Affix, Carousel, Button, Modal } from 'antd';
-import { Divider, List, Typography } from 'antd';
+import { Divider, List } from 'antd';
+import img1 from '@/assets/1.jpeg'
+import img2 from '@/assets/2.jpeg'
+import img3 from '@/assets/3.jpeg'
+import img4 from '@/assets/4.jpeg'
 import Shopitem from "@/pages/Shopitem";
 import Signin from "@/pages/Signin";
 import { useproThemeContext } from "@/theme/hooks";
 
 import { getToken } from '@/utils/token'
-import { selectPolicy } from "@/api";
+import { selectAllGoodsCategory, selectPolicy } from "@/api";
 import { Page } from "@/utils/type";
 import { useNavigate } from "react-router-dom";
 
@@ -32,6 +36,7 @@ const Index = () => {
     '时尚女鞋',
     '女鞋'
   ])
+  const [classification,setClassification] = useState<any[]>([])
   const [modal2Open, setModal2Open] = useState(false);
 
   const [token, setToken] = useState<string>('')
@@ -58,6 +63,11 @@ const Index = () => {
       navigate('/search?searchWord='+value)
     }
   }
+  const searchTip = (tip:string) => {
+    navigate('/search?searchWord='+tip)
+  }
+
+
   const contentStyle: React.CSSProperties = {
     height: '330px',
     width: '600px'
@@ -74,10 +84,21 @@ const Index = () => {
       setPolicyContent(policy.content)
     }, 200);
   }
+
+  //查询分类
+  const getClassification = async() => {
+      const result = await selectAllGoodsCategory()
+      if(result.code === 0){
+        setClassification(result.data)
+      }
+
+  }
   useEffect(() => {
     getPolicy()
+    getClassification()
   }, [])
   return (
+    <div className="bg-#E7E2E0">
     <div className={styles.shopinfo}>
       <Modal
         title="政策详情"
@@ -124,7 +145,7 @@ const Index = () => {
               <ul
                 className={styles.tipWords}
               >
-                {tipWords.map((item, idx) => <li key={idx}>{item}</li>)}
+                {tipWords.map((item, idx) => <li onClick={()=>searchTip(item)} key={idx}>{item}</li>)}
               </ul>
             </div>
             <div>
@@ -141,40 +162,13 @@ const Index = () => {
               <div >
                 <p style={{ marginLeft: '20px' }} className={styles.navtitle}>分类</p>
                 <br />
-                <ul style={{ listStyle: 'none', justifyContent: 'start' }} className={styles.navlist}>
-                  <li className={styles.ulitem}>
-                    <MenuOutlined style={{ marginRight: '10px' }} />
-                    女装 &nbsp;&nbsp;/ &nbsp;男装&nbsp;&nbsp; /&nbsp;&nbsp;裙子
-                  </li>
-                  <li className={styles.ulitem}>
-                    <MenuOutlined style={{ marginRight: '10px' }} />
-                    女鞋 &nbsp;&nbsp;/ &nbsp;男鞋&nbsp;&nbsp; /&nbsp;&nbsp;箱包
-                  </li>
-                  <li className={styles.ulitem}>
-                    <MenuOutlined style={{ marginRight: '10px' }} />
-                    美妆 &nbsp;&nbsp;/ &nbsp;饰品&nbsp;&nbsp; /&nbsp;&nbsp;洗护
-                  </li>
-                  <li className={styles.ulitem}>
-                    <MenuOutlined style={{ marginRight: '10px' }} />
-                    手机 &nbsp;&nbsp;/ &nbsp;数码&nbsp;&nbsp; /&nbsp;&nbsp;企业用品
-                  </li>
-                  <li className={styles.ulitem}>
-                    <MenuOutlined style={{ marginRight: '10px' }} />
-                    女装 &nbsp;&nbsp;/ &nbsp;男装&nbsp;&nbsp; /&nbsp;&nbsp;裙子
-                  </li>
-                  <li className={styles.ulitem}>
-                    <MenuOutlined style={{ marginRight: '10px' }} />
-                    女装 &nbsp;&nbsp;/ &nbsp;男装&nbsp;&nbsp; /&nbsp;&nbsp;裙子
-                  </li>
-                  <li className={styles.ulitem}>
-                    <MenuOutlined style={{ marginRight: '10px' }} />
-                    女鞋 &nbsp;&nbsp;/ &nbsp;男鞋&nbsp;&nbsp; /&nbsp;&nbsp;箱包
-                  </li>
-                  <li className={styles.ulitem}>
-                    <MenuOutlined style={{ marginRight: '10px' }} />
-                    美妆 &nbsp;&nbsp;/ &nbsp;饰品&nbsp;&nbsp; /&nbsp;&nbsp;洗护
-                  </li>
-                </ul>
+               <div className="flex justify-evenly flex-wrap">
+               {classification.map((item:any) => {
+                  return (
+                    <span onClick={()=>searchShop(item.name)} key={item.id} className="color-gray-500 w-20 mt-4 text-sm ml-2 hover-color-orange cursor-pointer">/{item.name}</span>
+                  )
+                })}
+               </div>
               </div>
             </div>
           </div>
@@ -194,23 +188,23 @@ const Index = () => {
               <span>|</span>
               <span>鸡蛋</span>
               <span>|</span>
-              <span>助农直播</span>
+              <span>助农商品</span>
             </div>
             <div className={styles.slidercontent}>
               <div style={{ flexGrow: '1.5' }}>
                 <div className={styles.carsour}>
                   <Carousel autoplay>
                     <div>
-                      <img style={contentStyle} src="src/assets/1.jpeg" alt="" />
+                      <img style={contentStyle} src={img1}  alt="" />
                     </div>
                     <div>
-                      <img style={contentStyle} src="src/assets/2.jpeg" alt="" />
+                      <img style={contentStyle} src={img2} alt="" />
                     </div>
                     <div>
-                      <img style={contentStyle} src="src/assets/3.jpeg" alt="" />
+                      <img style={contentStyle} src={img3}alt="" />
                     </div>
                     <div>
-                      <img style={contentStyle} src="src/assets/4.jpeg" alt="" />
+                      <img style={contentStyle} src={img4} alt="" />
                     </div>
                   </Carousel>
                 </div>
@@ -224,7 +218,7 @@ const Index = () => {
                   <Button size="large" type="primary" danger onClick={showUserLoginForin}>注册</Button>
                 </div>
               </div> :
-                <div className="w-60 mt-0 cursor-pointer -ml-20">
+                <div className="w-60 mt-0 cursor-pointer -ml-35">
                   <Divider orientation="left" ><span className="color-rose-400">惠民政策</span></Divider>
                   <List
                     size="large"
@@ -247,6 +241,7 @@ const Index = () => {
       <div className={styles.shopitem} >
         <Shopitem></Shopitem>
       </div>
+    </div>
     </div>
   );
 };

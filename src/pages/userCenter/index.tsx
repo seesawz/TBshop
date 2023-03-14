@@ -1,21 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { useAppSelector } from '@/store/index'
-import { Card, Avatar, Button, Badge, Row, Col, Space, Tag, Popconfirm, message, Modal,Form,Input } from 'antd';
+import { Card, Avatar, Button, Badge, Row, Col, Space, Tag, Popconfirm, message, Modal, Form, Input } from 'antd';
 import { applyDealer, selectOrderItem, selectUserDetail, updateUser } from "@/api";
 import type { Page } from "@/utils/type";
-
 const index = () => {
     const userInfo = useAppSelector(state => (state as any).user.userInfo)
-    const [userDetail,setUserDetail] =useState<any>()
+    const [userDetail, setUserDetail] = useState<any>()
     const [orderList, setOrderList] = useState<any[]>([])
-    const [result,setResult] = useState<string>('')
+    const [result, setResult] = useState<string>('')
     const [page, setPage] = useState<Page>({
         pageNo: 1,
         pageSize: 9,
         total: 0
     })
-    const editForm:any = useRef(null)
+    const editForm: any = useRef(null)
     //查询订单
     const getOrder = async () => {
         const data = {
@@ -30,25 +29,25 @@ const index = () => {
 
     const payOrder = async (item: any) => {
         const data = {
-            spuName: item.orderItem.spuName,
+            spuName: item.orderItem?.spuName,
             orderSn: item.orderSn,
             totalAmount: item.totalAmount
         }
-        window.open(`http://43.139.230.109:9002/audit/project/alipay/pay?subject=${data.spuName}&traceNo=${data.orderSn}&totalAmount=${data.totalAmount}`)
+        window.open(`http://43.139.230.109:9002/audit/project/alipay/pay?subject=${data?.spuName}&traceNo=${data.orderSn}&totalAmount=${data.totalAmount}`)
     }
 
-    const getDetial = async() => {
+    const getDetial = async () => {
         const result = await selectUserDetail(userInfo.userId)
-        if(result.code === 0){
+        if (result.code === 0) {
             setUserDetail(result.data)
         }
     }
     const confirm = async () => {
-        setUserDetail({...userDetail,becauseReason:result})
+        setUserDetail({ ...userDetail, becauseReason: result })
         const res = await applyDealer(userDetail)
         if (res.code === 0) {
             message.success('申请成功')
-        } else{
+        } else {
             message.info(res.message)
         }
         setResultOpen(false)
@@ -65,35 +64,35 @@ const index = () => {
     const showModal = () => {
         setIsModalOpen(true);
         //设置默认值
-      
+
         setTimeout(() => {
-            const form  = editForm.current
-              form.setFieldsValue(userDetail)
+            const form = editForm.current
+            form.setFieldsValue(userDetail)
         }, 500);
-        
+
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    const onFinish = async() => {
-        const form  = editForm.current
+    const onFinish = async () => {
+        const form = editForm.current
         const data = form.getFieldsValue()
         data.userId = userDetail.userId
         const result = await updateUser(data)
-        if(result.code === 0){
+        if (result.code === 0) {
             message.success('修改成功')
             getDetial()
-        }else{
+        } else {
             message.error('修改失败')
         }
-        setIsModalOpen(false)        
-      };
-      
-      const onFinishFailed = (errorInfo: any) => {
+        setIsModalOpen(false)
+    };
+
+    const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
-      };
-      const [resultOpen,setResultOpen] = useState<boolean>(false)
+    };
+    const [resultOpen, setResultOpen] = useState<boolean>(false)
     return (
         <div className='flex justify-center'>
             <Modal title="编辑个人信息" open={isModalOpen} onOk={onFinish} onCancel={handleCancel}>
@@ -138,21 +137,23 @@ const index = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-            <Modal title="请输入申请原因" open={resultOpen} onOk={confirm} onCancel={()=>{setResultOpen(false)}}>
-                <Input value={result} onChange={(e)=>setResult(e.target.value)}></Input>
+            <Modal title="请输入申请原因" open={resultOpen} onOk={confirm} onCancel={() => { setResultOpen(false) }}>
+                <Input value={result} onChange={(e) => setResult(e.target.value)}></Input>
             </Modal>
-            <div className='shadow w-3xl h-3xl flex justify-center'>
+            <div className='shadow w-3xl flex justify-center'>
                 <Card style={{ width: '100%' }}>
                     <Avatar className="relative" size={64} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDQ3m8AsJ3AgTb5qQGw--Jtx2mIGI-eun-6w&usqp=CAU">
                     </Avatar>
-                    <Tag className="absolute top-3" color="magenta">经销商</Tag>
+                    {userDetail?.roleName ? <Tag className="absolute top-3" color="magenta">经销商</Tag> : <></>}
                     <span className='ml-10 color-gray-600'>
                         这是我的个人描述巴拉巴拉，这是我的个人描述巴拉巴拉，这是我的个人描述巴拉巴拉
                     </span>
                     <p className='text-2xl font-500'>{userInfo.userName}</p>
                     <Space>
                         <Button className="ml-1" type='primary' onClick={showModal}>编辑</Button>
-                            <Button onClick={()=>setResultOpen(true)}>申请成为经销商</Button>
+                        {userDetail?.roleName ? <></> :
+                            <Button onClick={() => setResultOpen(true)}>申请成为经销商</Button>
+                        }
                     </Space>
                     <br />
                     <br />

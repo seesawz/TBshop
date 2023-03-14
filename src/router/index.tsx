@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { createRef } from 'react'
 import './AnimatedSwitch.less'
 import { SwitchTransition, CSSTransition } from 'react-transition-group'
@@ -20,9 +20,11 @@ import {
 import UserCenter from '@/pages/userCenter'
 import Pay from '@/pages/Pay'
 import SearchList from '@/pages/SearchList/index'
+import Login from '@/pages/login/index'
 
 const routes = [
   { path: '/', name: 'Home', element: <Shopinfo />, nodeRef: createRef() },
+  { path: '/login', name: 'login', element: <Login/>, nodeRef: createRef() },
   { path: '/detail', name: 'detail', element: <Detail />, nodeRef: createRef() },
   { path: '/userCenter', name: 'usercenter', element: <UserCenter/>, nodeRef: createRef() },
   { path: '/cart', name: 'cart', element: <Cart/>, nodeRef: createRef() },
@@ -45,6 +47,7 @@ const routes = [
 ) */
 
 function Example() {
+  
   const [messageApi, contextHolder] = message.useMessage()
   const info = (type:NoticeType,msg:string) => {
     messageApi.open({
@@ -53,11 +56,14 @@ function Example() {
     })
   }
   const location = useLocation()
+
+ 
+
   const currentOutlet = useOutlet()
   const { nodeRef } =
     routes.find((route) => route.path === location.pathname) ?? {}
   return (
-    <>
+    <div>
     {contextHolder}
    <ConfigProvider>
       <Header info={info}></Header>
@@ -80,7 +86,7 @@ function Example() {
       </Container>
       <Footer></Footer>
       </ ConfigProvider>  
-    </>
+    </div>
   )
 }
 

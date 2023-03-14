@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
 import type { HYRequestInterceptors, HYRequestConfig } from './type'
+import { resetToken } from '@/utils/token'
+import { message } from 'antd'
 
 class HYRequest {
     instance: AxiosInstance
@@ -37,7 +40,19 @@ class HYRequest {
         this.instance.interceptors.response.use(
             res => {
                 console.log('所有的实例都有的拦截器: 响应拦截成功')
-
+                const {data} = res
+                if(data.code === 1 && data.message === '用户未登录'){
+                    resetToken()
+                    message.info("登录过期，请重新登录")
+                    window.location.href='/login'
+                    return 
+                }
+                if(data.code === 1 && data.message === '请求资源auth-token为空'){
+                    resetToken()
+                    message.info("登录过期，请重新登录")
+                    window.location.href='/login'
+                    return 
+                }
                 return res.data
             },
 

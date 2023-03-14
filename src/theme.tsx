@@ -8,12 +8,7 @@ import type { NoticeType } from "antd/es/message/interface";
 const themeIndex = () => {
   const { myTheme } = useproThemeContext() as any;
   const [messageApi, contextHolder] = message.useMessage()
-  const info = (type:NoticeType,msg:string) => {
-    messageApi.open({
-      type,
-      content:msg
-    })
-  }
+ 
   return (
     <>
   {/*  {contextHolder}

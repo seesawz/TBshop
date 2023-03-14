@@ -79,7 +79,7 @@ const Index = () => {
                     <div className='flex justify-center'>
                         {
                             goodsInfo?.spuImgUrl && <img
-                                className='mt-20 h-xl w-xl object-contain b-rd-8'
+                                className='mt-20 h-xl w-xl object-contain rd-5'
                                 src={`http://43.139.230.109:9002/img/${goodsInfo?.spuImgUrl.split("/").at(-1)}`} alt="" />}
                     </div>
                 </div>
@@ -94,7 +94,7 @@ const Index = () => {
                         <Form
                             ref={form}
                         >
-                            <Form.Item
+                           {/*  <Form.Item
                                 {...formItemLayout}
                                 label="size">
                                 <Select
@@ -107,7 +107,7 @@ const Index = () => {
                                     ]}
                                 />
                             </Form.Item>
-                            <Divider></Divider>
+                            <Divider></Divider> */}
                             <Form.Item
                                 {...formItemLayout}
                                 rules={[{ required: true, message: '请选择下单数量' }]}

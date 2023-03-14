@@ -41,10 +41,11 @@ export const buyGoods = (data:any) => hyRequest.post<Result>({
 //支付
 export const pay = (data:any) => hyRequest2.get<Result>({
     url:`/audit/project/alipay/pay?subject=${data.spuName}&traceNo=${data.orderSn}&totalAmount=${data.totalAmount}`,
-    data
 })
-
-
+//查询分类
+export const selectAllGoodsCategory = () => hyRequest.get<Result>({
+    url:`/audit/project/goodsCategory/selectAllGoodsCategory`,
+})
 
 
 //购物车
