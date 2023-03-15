@@ -218,14 +218,18 @@ const Index = () => {
                   <Button size="large" type="primary" danger onClick={showUserLoginForin}>注册</Button>
                 </div>
               </div> :
-                <div className="w-60 mt-0 cursor-pointer -ml-35">
+                <div className="w-60 mt-0 cursor-pointer -ml-35 overflow-hidden">
                   <Divider orientation="left" ><span className="color-rose-400">惠民政策</span></Divider>
                   <List
                     size="large"
                     bordered
                     dataSource={policyList}
-                    renderItem={(policyList) => (
-                      <List.Item onClick={() => showPolicyContent(policyList)} key={policyList.id}>{policyList.title}</List.Item>
+                    renderItem={(policy,idx) => (
+                      <List.Item 
+                      onClick={() => showPolicyContent(policy)} 
+                      className={idx === policyList.length -1 ?styles.animate :''}
+                      key={policy.id}>
+                        {policy.title}</List.Item>
                     )
                     }
                   />

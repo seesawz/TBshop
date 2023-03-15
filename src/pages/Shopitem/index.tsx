@@ -43,6 +43,7 @@ const Index = () => {
            const curTop:number = document.documentElement.scrollTop 
             if( (document.body.offsetHeight + curTop) >= (scrollHeight-100)){
                 setPage({...page,pageSize:page.pageSize+9})
+                document.body.scrollTop = scrollHeight/2
             }
         })      
     },[])

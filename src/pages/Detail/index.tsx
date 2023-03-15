@@ -87,9 +87,10 @@ const Index = () => {
                     <div className='mt-30'>
                         <h2>{goodsInfo?.spuName}</h2>
                         <br />
-                        <p className='color-coolgray500'>¥{goodsInfo?.price}</p>
+                        <p className='color-red text-xl'>¥{goodsInfo?.price}</p>
                         <br />
                         <br />
+                        <h5>剩余库存数:{goodsInfo?.number}</h5>
                         <Divider></Divider>
                         <Form
                             ref={form}
@@ -114,7 +115,7 @@ const Index = () => {
                                 name='number'
                                 initialValue="1"
                                 label="数量">
-                                <InputNumber  min={1} step={1} onBlur={(e) => { check(e) }}></InputNumber>
+                                <InputNumber  min={1} max={goodsInfo?.number} step={1} onBlur={(e) => { check(e) }}></InputNumber>
                             </Form.Item>
                         </Form>
                         <br />
