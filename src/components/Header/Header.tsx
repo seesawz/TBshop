@@ -7,6 +7,7 @@ import img1 from '@/assets/12/headerbg1.png'
 import img2 from '@/assets/12/headerbg2.png'
 import img3 from '@/assets/12/headerbg3.png'
 import img4 from '@/assets/12/headerbg4.png'
+import bghead from '@/assets/headerbg.png'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getToken, resetToken } from '@/utils/token';
 import {userLogout} from '@/api/index'
@@ -60,7 +61,7 @@ const Header = () => {
     }
     return (
         
-        <div className={styles.head}>
+        <div className={styles.head} style={{backgroundImage:`url(${bghead})`}}>
             {contextHolder}
             <div className={styles.headertitle}>
                 {/*如果没有登录则弹出登录界面*/}

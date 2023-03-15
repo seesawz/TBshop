@@ -228,8 +228,9 @@ const Index = () => {
                       <List.Item 
                       onClick={() => showPolicyContent(policy)} 
                       className={idx === policyList.length -1 ?styles.animate :''}
+                      style={{display: idx < 4 ? '' : 'none'}}
                       key={policy.id}>
-                        {policy.title}</List.Item>
+                      {policy.title}</List.Item>
                     )
                     }
                   />
