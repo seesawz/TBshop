@@ -43,14 +43,17 @@ const index = () => {
         }
     }
     const confirm = async () => {
-        setUserDetail({ ...userDetail, becauseReason: result })
-        const res = await applyDealer(userDetail)
+        setUserDetail({ ...userDetail, becauseReason:result })
+        const data = userDetail
+        data.becauseReason = result
+        
+        const res = await applyDealer(data)
         if (res.code === 0) {
             message.success('申请成功')
         } else {
             message.info(res.message)
         }
-        setResultOpen(false)
+        setResultOpen(false) 
     };
 
 
