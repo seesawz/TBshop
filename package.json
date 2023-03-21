@@ -10,6 +10,7 @@
     "preview": "craco vite preview"
   },
   "dependencies": {
+    "@feb-team/legao-react": "^0.2.8-pre.4",
     "@loadable/component": "^5.15.2",
     "@reduxjs/toolkit": "^1.9.3",
     "antd": "^5.1.4",

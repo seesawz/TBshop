@@ -6,6 +6,7 @@ import type { Goods } from '@/utils/type'
 import {throttle} from '@/utils/index'
 import { getToken } from '@/utils/token'
 import {useAppSelector} from '@/store/index'
+import Magnifier from '@/components/magnifier/index'
 const Index = () => {
     const userInfo = useAppSelector(state => (state as any).user.userInfo)
     const [search] = useSearchParams()
@@ -75,12 +76,15 @@ const Index = () => {
     return (
         <div className='h-screen ml-20'>
             <div className="flex justify-center ">
-                <div className='flex-1 '>
-                    <div className='flex justify-center'>
+                <div className='flex-1'>
+                    {/* <div className='flex justify-center'>
                         {
                             goodsInfo?.spuImgUrl && <img
                                 className='mt-20 h-xl w-xl object-contain rd-5'
                                 src={`http://43.139.230.109:9002/img/${goodsInfo?.spuImgUrl.split("/").at(-1)}`} alt="" />}
+                    </div> */}
+                    <div className='flex justify-center mt-20'>
+                    {goodsInfo?.projectAttachList && <Magnifier images={goodsInfo?.projectAttachList}></Magnifier>}
                     </div>
                 </div>
                 <div className='flex-1'>

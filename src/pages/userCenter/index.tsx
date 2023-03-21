@@ -143,9 +143,10 @@ const index = () => {
             <Modal title="请输入申请原因" open={resultOpen} onOk={confirm} onCancel={() => { setResultOpen(false) }}>
                 <Input value={result} onChange={(e) => setResult(e.target.value)}></Input>
             </Modal>
-            <div className='shadow w-3xl flex justify-center'>
+            <div className='shadow w-3xl flex justify-center '>
                 <Card style={{ width: '100%' }}>
-                    <Avatar className="relative" size={64} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDQ3m8AsJ3AgTb5qQGw--Jtx2mIGI-eun-6w&usqp=CAU">
+                    <Avatar className="relative" size={64} 
+                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
                     </Avatar>
                     {userDetail?.roleName ? <Tag className="absolute top-3" color="magenta">经销商</Tag> : <></>}
                     <span className='ml-10 color-gray-600'>

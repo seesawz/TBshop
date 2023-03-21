@@ -19,6 +19,7 @@
 }
 .shoptitle{
     position: absolute;
+    word-break: break-all;
     width: 190px;
     top:10px;
     font-weight: 400;

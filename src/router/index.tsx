@@ -11,6 +11,7 @@ import { Container } from 'react-bootstrap'
 import { message } from 'antd';
 import { ConfigProvider } from 'antd';
 import type { NoticeType } from "antd/es/message/interface";
+import AutoScorllTop from './Top/Top'
 import Cart from '@/pages/cart'
 import {
   createBrowserRouter,
@@ -66,7 +67,8 @@ function Example() {
     <div>
     {contextHolder}
    <ConfigProvider>
-      <Header info={info}></Header>
+      <Header></Header>
+      <AutoScorllTop>
       <Container >
         <SwitchTransition>
           <CSSTransition
@@ -84,6 +86,7 @@ function Example() {
           </CSSTransition>
         </SwitchTransition>
       </Container>
+      </AutoScorllTop>
       <Footer></Footer>
       </ ConfigProvider>  
     </div>

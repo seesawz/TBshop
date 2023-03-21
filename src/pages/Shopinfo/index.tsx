@@ -130,7 +130,9 @@ const Index = () => {
         <Affix offsetTop={top}>
           <div className={styles.search}>
             <div>
-              <img src={logo} alt="" />
+              <img
+              className="w-10 h-10"
+              src='https://its.uiowa.edu/sites/its.uiowa.edu/files/styles/ic_logo/public/infocenter/logos/icon10_logo.png?itok=kriT_Oh1' alt="" />
               <span>&nbsp;&nbsp;农易网</span>
             </div>
             <div style={{ height: '100px' }}>

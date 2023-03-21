@@ -17,4 +17,5 @@ export interface Goods {
     spuName: string
     updateTime: any
     weight: any
+    projectAttachList:any[]
 }
