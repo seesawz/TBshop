@@ -18,4 +18,6 @@ export interface Goods {
     updateTime: any
     weight: any
     projectAttachList:any[]
+    address?:string
+    top?:string
 }

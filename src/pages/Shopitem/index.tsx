@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import type { Page } from '@/utils/type'
 import { selectGoodsInfoByUser } from '@/api'
 import type { Goods } from '@/utils/type'
+import {Tag} from 'antd'
 const Index = () => {
 
     const navigator = useNavigate()
@@ -65,7 +66,9 @@ const Index = () => {
                     <div onClick={()=>toShopDetail(item)} key={idx} className={styles.shoplist}>
                         <img className={styles.img}  src={`http://43.139.230.109:9002/img/${item.spuImgUrl.split("/").at(-1)}`} alt="" />
                         <p className={styles.shoptitle}>{item.spuName}</p>
+                        <p className={styles.shoptitle}  style={{marginTop:'40px',fontSize:'12px',wordBreak:'break-all'}}>{item.spuDescription}</p>
                         <p className={styles.shopprice}>¥{item.price}</p>
+                      {item.top &&   <Tag className='absolute bottom-1 right-0' color="#f50">Hot</Tag>}
                     </div>
                 ))}
             </div>

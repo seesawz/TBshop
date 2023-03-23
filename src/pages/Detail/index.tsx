@@ -134,14 +134,16 @@ const Index = () => {
                         <div className='mt-5 w-sm text-sm color-coolgray500'>
                             <p>Features: </p>
                             <ul>
-                                <li>40% preshrunk ring-spun cotton, 60% polyester terry fleece. </li>
+                                <li>产地:{goodsInfo?.address} </li>
                                 <li>Available in dark heather charcoal with the white Google logo screen printed across center chest.</li>
                             </ul>
                         </div>
                         <br />
                         <Space>
+                      
                             <Button type="primary" onClick={addCart} ghost style={{ width: '100%' }} >加入购物车</Button>
                             <Button type="primary" onClick={toPay} danger ghost style={{ width: '100%' }} >立即购买</Button>
+                           
                         </Space>
                     </div>
                 </div>
@@ -151,3 +153,5 @@ const Index = () => {
 }
 
 export default Index
+
+
