@@ -1,5 +1,6 @@
 import React, {  useRef, useState } from 'react';
 import PropTypes from 'prop-types'
+import { Image,Space } from 'antd';
 //放大镜组件
 const index = (prop: any) => {
 
@@ -7,7 +8,7 @@ const index = (prop: any) => {
         //  const box:HTMLElement  = document.getElementById('box')!
         //  const big:HTMLElement  = document.getElementById('big')!
         //  const img:HTMLElement  = document.getElementById('img')!
-    const mask1 = useRef(null)
+   /*  const mask1 = useRef(null)
     const box1 = useRef(null)
     const big1 = useRef(null)
     const img1 = useRef(null)
@@ -63,31 +64,33 @@ const index = (prop: any) => {
         img.style.left = (-bigX) + 'px';
         img.style.top = (-bigY) + 'px';
 
-    }
-    
+    } */
+    const [visible, setVisible] = useState(false);
     const { images } = prop
    const [curImage,setCurImage] = useState<any>(`http://43.139.230.109:9002/img/${images[0]?.attachUrl?.split("/").at(-1)}`)
     const changeImage = (item:any) => {
         setCurImage(`http://43.139.230.109:9002/img/${item?.attachUrl?.split("/").at(-1)}`)
     }
+    const getChange = (current: number, prevCurrent: number) => {
+        console.log(current,prevCurrent);
+    }
     //   src={`http://43.139.230.109:9002/img/${curImage?.attachUrl?.split("/").at(-1)}`}
     return (
         <div>
-            <div ref={box1} className='w-xl h-xl relative float-left -ml-20 flex  ' id="box"  
-            onMouseEnter={changeOver}
-            onMouseMove={()=>changeMove(event)}
-            onMouseLeave={()=>{
-                mask1.current.style.display = 'none';
-                big1.current.style.display = 'none';
-            }}
-            >
-            <img  src={curImage} className='w-xl h-xl object-contain absolute top-0 left-0 ml-30' alt="" />
-            <div  ref={mask1} id="mask" className='h-50 w-50 top-0 left-0 absolute cursor-move opacity-50 bg-sky' style={{display:'none'}}></div> 
+              <div style={{ display: 'none' }}>
+        <Image.PreviewGroup preview={{ 
+            visible,
+            onVisibleChange: (vis) => setVisible(vis),
+              }}>
+        <Image src={curImage}></Image>
+        </Image.PreviewGroup>
+      </div>
+            <div  className='w-xl h-xl  flex'>
+            <img onClick={()=>setVisible(true)}  src={curImage} className='w-xl h-xl object-contain' alt="" />
             </div>
-            <div className='overflow-hidden display-none z-1001 relative w-xl h-xl -top-150 left-110'  ref={big1} id='big'>
-                <img ref={img1} src={curImage} id="img" className='absolute top-0 left-0' alt="" />
-            </div>
-            <div className='w-sm flex mt-150 ml-auto mr-auto justify-around'>
+            {/* <div className=''> */}
+            <div className='w-sm  mt-10 ml-20'>
+            <Space>
                {images?.map((item:any,index:number)=>{
                 return (
                     <img
@@ -100,6 +103,7 @@ const index = (prop: any) => {
                 />
                 )
                })}
+               </Space>
             </div>
         </div>
     );

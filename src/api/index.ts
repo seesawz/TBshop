@@ -12,6 +12,11 @@ export const userLoginForname = (data:any) => hyRequest.post<Result>({
     data
 })
 
+export const applyVerificationCode = (data:any) => hyRequest.post<Result>({
+    url:'/audit/member/user/applyVerificationCode',
+    data
+})
+
 export const userRegister = (data:any) => hyRequest.post<Result>({
     url:'/audit/member/user/createUser',
     data

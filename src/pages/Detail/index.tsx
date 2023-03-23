@@ -26,6 +26,11 @@ const Index = () => {
         }
     }
     const toPay = () => {
+        if(token === undefined){
+            message.info('请先登录')
+           navigate('/login')
+            return
+        }
         const Form: any = form.current
         const { number } = Form.getFieldsValue()
         const data:Goods = goodsInfo!
@@ -46,6 +51,7 @@ const Index = () => {
     const addCart = throttle(  async() => {        
         if(token === undefined){
             message.info('请先登录')
+           navigate('/login')
             return
         }
          const data = {

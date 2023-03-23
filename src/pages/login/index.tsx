@@ -1,10 +1,29 @@
 import LoginForm from "./LoginForm/login";
-import React from "react";
+import React, { useState } from "react";
 import loginLeft from "@/assets/images/login_left2.png";
-import logo from "@/assets/images/logo.png";
 import "./index.less";
+import { Tabs } from 'antd';
+import type { TabsProps } from 'antd';	
 
 const Login = () => {
+	const [phoneT,setPhoneT] = useState<boolean>(false)
+	const items: TabsProps['items'] = [
+        {
+          key: '1',
+          label: `账号登录`,
+        },
+        {
+          key: '2',
+          label: `手机登陆`,
+        },
+      ]  
+	const onChange = (key: string) => {
+		if(key === '2'){
+			setPhoneT(true)
+		}else{
+			setPhoneT(false)
+		}
+	}
 	return (
 		<div className="login-container">
 			<div className="login-box">
@@ -14,10 +33,10 @@ const Login = () => {
 				<div className="login-form  shadow-xl w-xl">
 					<div className="login-logo">
 						{/* <img className="login-icon" src={logo} alt="logo" /> */}
-						<span className="logo-text">农易助农网</span>
+						<Tabs defaultActiveKey="1" items={items} onChange={onChange} />
 					</div>
 					<div className="ml-14">
-					<LoginForm  />
+					<LoginForm  phoneT={phoneT}/>
 					</div>
 				</div>
 			</div>

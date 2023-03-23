@@ -7,12 +7,13 @@ import {
 } from 'antd'
 import { setToken } from '@/utils/token'
 import { useproThemeContext } from '@/theme/hooks'
-import { userLoginForname, userRegister } from '@/api/index'
+import { applyVerificationCode, userLoginForname, userRegister } from '@/api/index'
 import {SAVEUSERINFO} from '@/store/module/userSlice'
 import { useAppSelector,useAppDispatch } from '@/store/index'
 import { useDispatch} from "react-redux";
 import { useNavigate } from 'react-router-dom'
-
+import { NoticeType } from 'antd/es/message/interface'
+import { debounced } from '@/utils'
 const Index = (props: any) => {
     const info = (type:NoticeType,msg:string) => {
         messageApi.open({
@@ -58,6 +59,8 @@ const Index = (props: any) => {
     })
     const [veriTime, setVeriTime] = useState('发送')
     const dispatch = useAppDispatch()
+
+
     //methods
     const onFinish = async () => {
         const result = await userLoginForname(accountLogin)
@@ -71,6 +74,21 @@ const Index = (props: any) => {
         }
 
     }
+    const onFinishPhone = async () => {
+        const data = {
+            phone:userPhoneLogin.phoneNumber,
+            code:userPhoneLogin.verificationCode
+        }
+        const result = await userLoginForname(data)
+        if (result.code === 0) {
+            setToken(result.data.token)
+            info('success', '登录成功')
+            dispatch(SAVEUSERINFO(result.data))
+            navigate('/')
+        } else {
+            info('error', result.message)
+        }
+    }
     const onRegister = async () => {
         const result = await userRegister(accountRegister)
         if (result.code === 0) {
@@ -83,7 +101,7 @@ const Index = (props: any) => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo)
     }
-    const sendsendVerificationCode = () => {
+    const sendsendVerificationCode = debounced(async() => {
         if(veriTime!=='发送'){
             messageApi.open({type:'warning',content: '验证码发送中请不要重复发送'})
             return 
@@ -92,26 +110,32 @@ const Index = (props: any) => {
             messageApi.open({type:'error',content: '手机号码错误'})
             return
         }
-        messageApi.open({
-            type: 'success',
-            content: '验证码已发送',
-          });
-        let i = 60
-        const timer = setInterval(() => {
-            setVeriTime(`${i}s`)
-            i--
-            if (i <= 0) {
-                clearInterval(timer)
-                setVeriTime('发送')
-            }
-        }, 1000)
-       
-    }
+        
+        const result = await applyVerificationCode({phone:userPhoneLogin.phoneNumber})
+        if(result.code === 0){
+            messageApi.open({
+                type: 'success',
+                content: '验证码已发送',
+              });
+            let i = 60
+            const timer = setInterval(() => {
+                setVeriTime(`${i}s`)
+                i--
+                if (i <= 0) {
+                    clearInterval(timer)
+                    setVeriTime('发送')
+                }
+            }, 1000)
+           
+        }
+    },1000)
+
+    const {phoneT} = props
 
     return isLogin ? (
         <>
         {contextHolder}
-            {phoneLogin ?
+            {!phoneT ?
                 <Form
                     name="basic"
                     labelCol={{ span: 8 }}
@@ -167,7 +191,6 @@ const Index = (props: any) => {
                             注册
                         </Button>
                     </Form.Item>
-                    <span className='cursor-pointer color-gray-5 hover:color-black ' onClick={() => { setPhoneLogin(false) }}>验证码登录</span>
                 </Form> :
                 <Form
                     name="basic"
@@ -175,7 +198,7 @@ const Index = (props: any) => {
                     wrapperCol={{ span: 16 }}
                     style={{ maxWidth: 300 }}
                     initialValues={{ remember: false }}
-                    onFinish={onFinish}
+                    onFinish={onFinishPhone}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
@@ -204,7 +227,12 @@ const Index = (props: any) => {
                         rules={[{ required: true, message: '请输入验证码!' },
                         { min: 4, max: 6, message: '验证码错误' }]}
                     >
-                        <Input />
+                        <Input 
+                        onChange={(e)=>{setUserPhoneLogin({
+                            ...userPhoneLogin,
+                            verificationCode: e.target.value
+                        })}}
+                        />
                     </Form.Item>
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                         <Button type="primary" htmlType="submit">
