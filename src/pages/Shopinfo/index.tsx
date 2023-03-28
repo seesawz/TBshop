@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import styles from './index.module.css'
 import logo from '@/assets/react.svg'
 import { EditOutlined } from '@ant-design/icons';
-import { Input, Affix, Carousel, Button, Modal } from 'antd';
+import { Input, Affix, Carousel, Button, Modal,AutoComplete } from 'antd';
 import { Divider, List } from 'antd';
 import img1 from '@/assets/1.jpeg'
 import img2 from '@/assets/2.jpeg'
 import img3 from '@/assets/3.jpeg'
 import img4 from '@/assets/4.jpeg'
 import Shopitem from "@/pages/Shopitem";
-import Signin from "@/pages/Signin";
 import { useproThemeContext } from "@/theme/hooks";
 
 import { getToken } from '@/utils/token'
-import { selectAllGoodsCategory, selectPolicy } from "@/api";
+import { getHistorySearch, saveHistoryRecord, selectAllGoodsCategory, selectPolicy } from "@/api";
 import { Page } from "@/utils/type";
 import { useNavigate } from "react-router-dom";
 
@@ -41,26 +40,49 @@ const Index = () => {
 
   const [token, setToken] = useState<string>('')
 
-  const { isLogin, setIsLogin } = useproThemeContext()!
+  const {  setIsLogin } = useproThemeContext()!
+  const [options, setOptions] = useState<{ value: string }[]>([]);
+
   const showUserLogin = () => {
     setIsLogin(true)
     setModal2Open(true)
   }
+
   const showUserLoginForin = () => {
     setIsLogin(false)
     setModal2Open(true)
   }
+
+  const getHistoryRecord = async () => {
+    const result = await getHistorySearch()
+    if (result.code === 0){
+      const arr = result.data.map((item:any) => {
+        return {value:item}
+      })
+      setOptions(arr)
+      }
+    }
+
   useEffect(() => {
     //取推荐词
     setSearchWords(tipWords[Math.round(Math.random() * 4)])
     setToken(getToken() as string)
   }, [])
+
+  useEffect(()=>{
+    getHistoryRecord()
+  },[])
   const searchShop = (value: string) => {
     //此处是为了判断用户有没有输入
     if(value === ''){
-      navigate('/search?searchWord='+searchWords)
+         navigate('/search?searchWord='+searchWords)
     }else{
-      navigate('/search?searchWord='+value)
+      saveHistoryRecord({key:'history',value}).then(res => {
+        if (res.code === 0) {
+          navigate('/search?searchWord=' + value)
+        }
+      }).catch(err=>{
+        console.log(err)})
     }
   }
   const searchTip = (tip:string) => {
@@ -87,9 +109,9 @@ const Index = () => {
 
   //查询分类
   const getClassification = async() => {
-      const result = await selectAllGoodsCategory()
+      const result = await selectAllGoodsCategory({})
       if(result.code === 0){
-        setClassification(result.data)
+        setClassification(result.data.data)
       }
 
   }
@@ -113,18 +135,6 @@ const Index = () => {
           <span>{policyContent}</span>
         </div>
       </Modal>
-      <Modal
-        title="请先登录"
-        centered
-        destroyOnClose={true}
-        open={modal2Open}
-        footer={null}
-        onOk={() => setModal2Open(false)}
-        onCancel={() => setModal2Open(false)}
-        width={350}
-      >
-        <Signin></Signin>
-      </Modal>
       <br /><br />
       <header className={styles.header}>
         <Affix offsetTop={top}>
@@ -136,14 +146,18 @@ const Index = () => {
               <span>&nbsp;&nbsp;农易网</span>
             </div>
             <div style={{ height: '100px' }}>
+              <AutoComplete
+                options={options}
+              >
               <Input.Search
                 size="large"
                 placeholder={searchWords}
                 loading={false}
                 enterButton
                 onSearch={searchShop}
-                style={{ width: '600px', flex: 1, minHeight: '100px', borderRadius: '50px' }}
+                style={{ width: '600px', flex: 1, borderRadius: '50px' }}
                 prefix={<EditOutlined />} />
+              </AutoComplete>
               <ul
                 className={styles.tipWords}
               >
@@ -165,7 +179,7 @@ const Index = () => {
                 <p style={{ marginLeft: '20px' }} className={styles.navtitle}>分类</p>
                 <br />
                <div className="flex justify-evenly flex-wrap">
-               {classification.map((item:any) => {
+               {classification && classification.map((item:any) => {
                   return (
                     <span onClick={()=>searchShop(item.name)} key={item.id} className="color-gray-500 w-20 mt-4 text-sm ml-2 hover-color-orange cursor-pointer">/{item.name}</span>
                   )

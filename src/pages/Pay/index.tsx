@@ -11,7 +11,7 @@ const index = () => {
     const navigate = useNavigate()
     const Info = location.state?.data
     const description = 'Welcome!';
-    const { TextArea } = Input
+  console.log(Info);
     const onFinish = async () => {
         const data: any = form.current.getFieldsValue()
         const result = await buyGoods({ ...data, ...location.state.data })
@@ -27,8 +27,7 @@ const index = () => {
     };
     return (
         <div>
-           
-            <div className="w-60% mt-10 ml-auto mr-auto   leading-10 ">
+          <div className="w-60% mt-10 ml-auto mr-auto   leading-10 ">
             <Steps
     current={1}
     items={[
@@ -111,7 +110,7 @@ const index = () => {
                 </Form.Item>
                 <Form.Item wrapperCol={{ offset: 10, span: 16 }}>
                 <Button type="dashed" htmlType="submit">
-                    Submit
+                    提交
                 </Button>
                 </Form.Item>
             </Form>

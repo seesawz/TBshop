@@ -8,9 +8,7 @@ import Footer from '@/components/Footer/Footer'
 import Shopinfo from '@/pages/Shopinfo'
 import Detail from '@/pages/Detail'
 import { Container } from 'react-bootstrap'
-import { message } from 'antd';
 import { ConfigProvider } from 'antd';
-import type { NoticeType } from "antd/es/message/interface";
 import AutoScorllTop from './Top/Top'
 import Cart from '@/pages/cart'
 import {
@@ -48,14 +46,6 @@ const routes = [
 ) */
 
 function Example() {
-  
-  const [messageApi, contextHolder] = message.useMessage()
-  const info = (type:NoticeType,msg:string) => {
-    messageApi.open({
-      type,
-      content:msg
-    })
-  }
   const location = useLocation()
 
  
@@ -65,7 +55,6 @@ function Example() {
     routes.find((route) => route.path === location.pathname) ?? {}
   return (
     <div>
-    {contextHolder}
    <ConfigProvider>
       <Header></Header>
       <AutoScorllTop>

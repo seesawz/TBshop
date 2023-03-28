@@ -89,8 +89,8 @@ const Index = (props: any) => {
             info('error', result.message)
         }
     }
-    const onRegister = async () => {
-        const result = await userRegister(accountRegister)
+    const onRegister = async (value:any) => {
+        const result = await userRegister(value)
         if (result.code === 0) {
             setIsLogin(true)
             info('success', '注册成功',)
@@ -128,7 +128,7 @@ const Index = (props: any) => {
             }, 1000)
            
         }
-    },1000)
+    },300)
 
     const {phoneT} = props
 
@@ -206,7 +206,7 @@ const Index = (props: any) => {
                         label="手机号"
                         name="phone"
                         rules={[{ required: true, message: '请输入手机号!' },
-                        { min: 11, max: 11, message: '手机号为11位' }]}
+                        { pattern: /^1[3456789]\d{9}$/, message: '手机号码错误' }]}
                     >
                         <Search
                             allowClear
@@ -261,12 +261,7 @@ const Index = (props: any) => {
                     rules={[{ required: true, message: '请输入用户名!' },
                     { min: 3, max: 11, message: '长度在3-11个字符' }]}
                 >
-                    <Input value={accountRegister.userName} onChange={(e) => {
-                        setAccountRegister({
-                            userName: e.target.value,
-                            password: ''
-                        })
-                    }} />
+                    <Input />
                 </Form.Item>
 
                 <Form.Item
@@ -275,12 +270,7 @@ const Index = (props: any) => {
                     rules={[{ required: true, message: '请输入密码!' },
                     { min: 6, max: 15, message: '长度在6-15个字符' }]}
                 >
-                    <Input.Password value={accountRegister.password} onChange={(e) => {
-                        setAccountRegister({
-                            ...accountRegister,
-                            password: e.target.value,
-                        })
-                    }} />
+                    <Input.Password   />
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

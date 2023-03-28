@@ -76,7 +76,6 @@ const index = (prop: any) => {
         setImgIdx(idx)
         setCurImage(`http://43.139.230.109:9002/img/${item?.attachUrl?.split("/").at(-1)}`)
     }
-
     const getChange = (current: number, prevCurrent: number) => {
         console.log(current, prevCurrent);
     }

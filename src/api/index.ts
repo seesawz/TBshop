@@ -48,8 +48,9 @@ export const pay = (data:any) => hyRequest2.get<Result>({
     url:`/audit/project/alipay/pay?subject=${data.spuName}&traceNo=${data.orderSn}&totalAmount=${data.totalAmount}`,
 })
 //查询分类
-export const selectAllGoodsCategory = () => hyRequest.get<Result>({
+export const selectAllGoodsCategory = (data:any) => hyRequest.post<Result>({
     url:`/audit/project/goodsCategory/selectAllGoodsCategory`,
+    data
 })
 
 
@@ -88,6 +89,11 @@ export const applyDealer = (data:any) => hyRequest.put<Result>({
     url:`/audit/member/user/applyDealer`,
     data
 })
+//删除订单
+export const deleteOrder = (id:string) => hyRequest.delete<Result>({
+    url:`/audit/project/order/deleteOrder/${id}`,
+})
+
 
 //退出登录
 export const userLogout = () => hyRequest.post<Result>({
@@ -99,4 +105,17 @@ export const userLogout = () => hyRequest.post<Result>({
 export const selectPolicy = (data:any) => hyRequest.post<Result>({
     url:`/audit/project/policy/selectPolicy`,
     data
+})
+
+//保存历史记录
+export const saveHistoryRecord = (data:{key:'history',value:string}={key:'history',value:''}) => hyRequest.post<Result>({
+    url:`/audit/project/historyRecord/saveHistoryRecord`,
+    data
+})
+
+export const getHistorySearch = () => hyRequest.post<Result>({
+    url:`/audit/project/historyRecord/getHistorySearch`,
+    data:{
+        key:'history'
+    }
 })

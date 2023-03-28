@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { useAppSelector } from '@/store/index'
-import { Card, Avatar, Button, Badge, Row, Col, Space, Tag, Popconfirm, message, Modal, Form, Input } from 'antd';
-import { applyDealer, selectOrderItem, selectUserDetail, updateUser } from "@/api";
+import { useAppSelector } from "@/store"
+import { Card, Avatar, Button, Badge, Row, Col, Space, Tag, message, Modal, Form, Input } from 'antd';
+import { applyDealer, deleteOrder, selectOrderItem, selectUserDetail, updateUser } from "@/api";
 import type { Page } from "@/utils/type";
 const index = () => {
     const userInfo = useAppSelector(state => (state as any).user.userInfo)
@@ -95,7 +95,19 @@ const index = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
+    const deleteMyOrder = async (id:string) => {
+        const result = await deleteOrder(id)
+        if (result.code === 0) {
+            message.success('删除成功')
+            getOrder()
+        } else {
+            message.error('删除失败')
+        }
+    }
+
+
     const [resultOpen, setResultOpen] = useState<boolean>(false)
+
     return (
         <div className='flex justify-center'>
             <Modal title="编辑个人信息" open={isModalOpen} onOk={onFinish} onCancel={handleCancel}>
@@ -161,34 +173,33 @@ const index = () => {
                     </Space>
                     <br />
                     <br />
-                    <Badge count={orderList.length ?? 0}>
                         <p>我的订单&nbsp;&nbsp;&nbsp;</p>
-                    </Badge>
                     {orderList?.map((item, idx) => {
                         return (
                             <Card key={idx} size="small" className="mt-10">
                                 {/* <div className="flex justify-around leading-10">   */}
                                 <Row className="leading-10">
-                                    <Col span={6}>
-                                        <span>订单号:{item?.orderSn.slice(0, 10)}</span>
-                                    </Col>
                                     <Col span={5}>
+                                        <span>订单号:{item?.orderSn.slice(0, 5)}</span>
+                                    </Col>
+                                    <Col span={4}>
                                         <span>姓名:{item.receiverName}</span>
                                     </Col>
                                     <Col span={6}>
                                         <span>手机号:{item.receiverPhone}</span>
                                     </Col>
                                     <Col span={4}>  <span>总价:¥{item.totalAmount}</span></Col>
-                                    <Col span={3}>
-                                        {item.status === '0' ?
-                                            <Button type="primary" danger className="mt-1" onClick={() => { payOrder(item) }}>付款</Button>
-                                            :
-                                            <Button type="primary" disabled={true} danger className="mt-1" >已付款</Button>
-                                        }
+                                    <Col span={5}>
+                                       <Space>
+                                           {item.status === '0' ?
+                                             <Button type="primary" danger className="mt-1" onClick={() => { payOrder(item) }}>付款</Button>
+                                             :
+                                             <Button type="primary" disabled={true} danger className="mt-1" >已付款</Button>
+                                           }
+                                           <Button onClick={() => {deleteMyOrder(item.orderSn)}}>删除</Button>
+                                       </Space>
                                     </Col>
                                 </Row>
-
-                                {/* </div> */}
                             </Card>
                         )
                     })

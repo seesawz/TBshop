@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {Button, message} from 'antd'
+import { Button, message, Space } from "antd";
 import {useAppSelector} from '@/store/index'
 import { selectShoppingCart,deleteShoppingCart } from '@/api';
+import { useNavigate } from "react-router-dom";
 const index = () => {
+  const navigate = useNavigate()
     const userInfo = useAppSelector(state => (state as any).user.userInfo)
     const [cartList,setCartList] = useState<any []>([])
 
@@ -21,6 +23,11 @@ const index = () => {
             console.log(result);
             setCartList(result.data)
         }
+    }
+    // 确认订单
+    const submitOrder = async (order:any) => {
+      console.log(order);
+      navigate('/pay',{state:{order}})
     }
 
     useEffect(()=>{
@@ -49,7 +56,10 @@ const index = () => {
                <span>描述:{item.spuDescription.slice(0,7)}</span>
                <span>数量:{item.number} </span>
                <span>价格:{item.price * item.number}</span>
-                <Button className='mt-3' danger type="primary" onClick={()=>{deleteCartList(item)}}>删除</Button>
+                  <Space>
+                    <Button type="primary" onClick={()=>{submitOrder(item)}}>下单</Button>
+                <Button className='mt-3'  onClick={()=>{deleteCartList(item)}}>删除</Button>
+                  </Space>
                </div>
                )
             )}
