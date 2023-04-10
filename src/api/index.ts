@@ -104,7 +104,7 @@ export const userLogout = () => hyRequest.post<Result>({
 //政策查询
 export const selectPolicy = (data:any) => hyRequest.post<Result>({
     url:`/audit/project/policy/selectPolicy`,
-    data
+    data,
 })
 
 //保存历史记录
