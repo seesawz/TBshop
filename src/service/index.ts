@@ -11,8 +11,11 @@ const hyRequest = new HYRequest({
   interceptors: {
     requestInterceptor: config => {
       const token = getToken()
+      console.log('token',token)
       if (token) {
-        config.headers!['auth-token'] = token
+          if(config.headers){
+config.headers['auth-token'] = token
+          }
       }
       return config
     },

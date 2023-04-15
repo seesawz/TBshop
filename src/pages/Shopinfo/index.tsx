@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from './index.module.css'
 import logo from '@/assets/react.svg'
 import { EditOutlined } from '@ant-design/icons';
-import { Input, Affix, Carousel, Button, Modal,AutoComplete } from 'antd';
+import { Input, Affix, Carousel, Button, Modal,AutoComplete,Pagination } from 'antd';
 import { Divider, List } from 'antd';
 import img1 from '@/assets/1.jpeg'
 import img2 from '@/assets/2.jpeg'
@@ -69,9 +69,10 @@ const Index = () => {
     setToken(getToken() as string)
   }, [])
 
-  useEffect(()=>{
-    getHistoryRecord()
-  },[])
+    //查询搜索的历史记录
+   useEffect(()=>{
+     getHistoryRecord()
+   },[])
   const searchShop = (value: string) => {
     //此处是为了判断用户有没有输入
     if(value === ''){
@@ -185,6 +186,7 @@ const Index = () => {
                   )
                 })}
                </div>
+               <Pagination className="mt-25 ml-20" size="small"  defaultCurrent={1} total={50} simple={true}/>
               </div>
             </div>
           </div>
@@ -250,6 +252,7 @@ const Index = () => {
                     )
                     }
                   />
+               <Pagination className="mt-5 ml-25" size="small"  defaultCurrent={1} total={50} simple={true}/>
                 </div>
               }
             </div>

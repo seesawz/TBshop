@@ -1,4 +1,4 @@
-.shoplist{
+.shoplist {
     background-color: #f7f9fa;
     height: 174px;
     width: 365px;
@@ -9,15 +9,13 @@
     margin-top: 20px;
 }
 .shoplist:last-child:nth-child(4n - 1) {
-  background-color: red;
     margin-right: calc(24% + 4% / 3);
 }
 /* 如果最后一行是2个元素 */
 .shoplist:last-child:nth-child(4n - 2) {
-    background-color: red;
-    margin-right: calc(48% + 8% / 3);
+    margin-right: calc(36% + 6% / 3);
 }
-.img{
+.img {
     height: 150px;
     width: 150px;
     border-radius: 10px;
@@ -26,31 +24,31 @@
     margin-top: 10px;
     object-fit: cover;
 }
-.shoptitle{
+.shoptitle {
     position: absolute;
     word-break: break-all;
     width: 190px;
-    top:10px;
+    top: 10px;
     font-weight: 400;
     color: #666;
     left: 180px;
 }
-.shopprice{
+.shopprice {
     position: absolute;
     width: 190px;
-    top:120px;
+    top: 120px;
     font-size: 22px;
     font-weight: 400;
     color: orangered;
     left: 185px;
 }
-.shoplist:hover{
+.shoplist:hover {
     border: solid 1px orange;
     background-color: white;
 }
-.img:hover{
-   opacity: 0.8;
+.img:hover {
+    opacity: 0.8;
 }
-.shoptitle:hover{
+.shoptitle:hover {
     color: orange;
 }

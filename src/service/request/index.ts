@@ -15,10 +15,10 @@ class HYRequest {
     //保存基本信息
     this.interceptors = config.interceptors
     //使用拦截器
-    //从config钟取出的拦截器是对应的实例的拦截器
+    //从config中取出的拦截器是对应的实例的拦截器
     this.instance.interceptors.request.use(
+      this.interceptors?.requestInterceptor,
       this.interceptors?.requestInterceptorCatch,
-      this.interceptors?.requestInterceptor
     )
     this.instance.interceptors.response.use(
       this.interceptors?.responseInterceptor,
@@ -46,13 +46,13 @@ class HYRequest {
         if (data.code === 1 && data.message === '用户未登录') {
           resetToken()
           message.info('登录过期，请重新登录')
-          window.location.href = '/login'
+          //window.location.href = '/login'
           return
         }
         if (data.code === 1 && data.message === '请求资源auth-token为空') {
           resetToken()
           message.info('登录过期，请重新登录')
-          window.location.href = '/login'
+          //window.location.href = '/login'
           return
         }
         return res.data

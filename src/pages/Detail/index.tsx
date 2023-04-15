@@ -83,6 +83,7 @@ const Index = () => {
         <div className='h-screen ml-20'>
             <div className="flex justify-center ">
                 <div className='flex-1'>
+                    <div></div>
                     {/* <div className='flex justify-center'>
                         {
                             goodsInfo?.spuImgUrl && <img
