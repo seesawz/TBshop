@@ -33,7 +33,6 @@ class HYRequest {
 
       err => {
         console.log('所有的实例都有的拦截器: 请求拦截失败')
-
         return err
       }
     )

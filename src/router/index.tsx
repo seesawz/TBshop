@@ -20,15 +20,17 @@ import UserCenter from '@/pages/userCenter'
 import Pay from '@/pages/Pay'
 import SearchList from '@/pages/SearchList/index'
 import Login from '@/pages/login/index'
+import Chat from '@/pages/Chat/index'
 
 const routes = [
   { path: '/', name: 'Home', element: <Shopinfo />, nodeRef: createRef() },
-  { path: '/login', name: 'login', element: <Login/>, nodeRef: createRef() },
+  { path: '/login', name: 'login', element: <Login />, nodeRef: createRef() },
   { path: '/detail', name: 'detail', element: <Detail />, nodeRef: createRef() },
-  { path: '/userCenter', name: 'usercenter', element: <UserCenter/>, nodeRef: createRef() },
-  { path: '/cart', name: 'cart', element: <Cart/>, nodeRef: createRef() },
-  { path: '/pay', name: 'pay', element: <Pay/>, nodeRef: createRef() },
-  { path: '/search', name: 'search', element: <SearchList/>, nodeRef: createRef() },
+  { path: '/userCenter', name: 'usercenter', element: <UserCenter />, nodeRef: createRef() },
+  { path: '/cart', name: 'cart', element: <Cart />, nodeRef: createRef() },
+  { path: '/pay', name: 'pay', element: <Pay />, nodeRef: createRef() },
+  { path: '/search', name: 'search', element: <SearchList />, nodeRef: createRef() },
+  { path: '/chat', name: 'chat', element: <Chat />, nodeRef: createRef() },
 ]
 /*  const MyRouter = () => (
     <div style={{ backgroundColor: '#dededd' }} className={styles.bg}>
@@ -48,36 +50,36 @@ const routes = [
 function Example() {
   const location = useLocation()
 
- 
+
 
   const currentOutlet = useOutlet()
   const { nodeRef } =
     routes.find((route) => route.path === location.pathname) ?? {}
   return (
     <div>
-   <ConfigProvider>
-      <Header></Header>
-      <AutoScorllTop>
-      <Container >
-        <SwitchTransition>
-          <CSSTransition
-            key={location.pathname}
-            nodeRef={nodeRef}
-            timeout={300}
-            classNames="page"
-            unmountOnExit
-          >
-            {(state) => (
-              <div ref={nodeRef} className='page'>
-                {currentOutlet}
-              </div>
-            )}
-          </CSSTransition>
-        </SwitchTransition>
-      </Container>
-      </AutoScorllTop>
-      <Footer></Footer>
-      </ ConfigProvider>  
+      <ConfigProvider>
+        <Header></Header>
+        <AutoScorllTop>
+          <Container >
+            <SwitchTransition>
+              <CSSTransition
+                key={location.pathname}
+                nodeRef={nodeRef}
+                timeout={300}
+                classNames="page"
+                unmountOnExit
+              >
+                {(state) => (
+                  <div ref={nodeRef} className='page'>
+                    {currentOutlet}
+                  </div>
+                )}
+              </CSSTransition>
+            </SwitchTransition>
+          </Container>
+        </AutoScorllTop>
+
+      </ ConfigProvider>
     </div>
   )
 }

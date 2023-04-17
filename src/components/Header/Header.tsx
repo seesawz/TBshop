@@ -44,10 +44,14 @@ const Header = () => {
         navigate('/login')
     }
     const openNotificationWithIcon = () => {
-        api['warning']({
-            message: '客服功能暂未上线',
-            description: '抱歉 客服功能暂未上线，您可以在后续更新中了解到更多信息。'
-        })
+     const token = getToken() && getToken() || ''
+        //如果没有登录就先登录，如果登录了就跳转个人中心
+        if(token.length!==0){
+            navigate('/chat')
+            return 
+        }
+        navigate('/login')
+
     }
     const toCart = () => {
         navigate('cart')
