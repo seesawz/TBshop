@@ -11,11 +11,8 @@ export default defineConfig({
     react(),
     Unocss({
       presets: [
-       presetUno()
-     ]
-     }),
-    eslintPlugin({
-      include: ['src/**/*.ts', 'src/**/*.tsx', 'src/*.ts', 'src/*.tsx']
+        presetUno()
+      ]
     }),
   ],
   /* css: {
@@ -43,8 +40,8 @@ export default defineConfig({
     alias: [
       {
         // 约定：使用 @ 表示 src 文件所在路径
-        find:'@',
-        replacement:path.resolve(__dirname, 'src'),
+        find: '@',
+        replacement: path.resolve(__dirname, 'src'),
       }
     ]
   },

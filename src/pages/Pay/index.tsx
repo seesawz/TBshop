@@ -27,7 +27,7 @@ const index = () => {
     };
     return (
         <div>
-          <div className="w-60% mt-10 ml-auto mr-auto   leading-10 ">
+          <div className="w-60% mt-10 ml-auto mr-auto leading-10 ">
             <Steps
     current={1}
     items={[

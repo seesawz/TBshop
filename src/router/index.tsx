@@ -57,8 +57,8 @@ function Example() {
     routes.find((route) => route.path === location.pathname) ?? {}
   return (
     <div>
+           <Header></Header>
       <ConfigProvider>
-        <Header></Header>
         <AutoScorllTop>
           <Container >
             <SwitchTransition>
