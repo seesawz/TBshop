@@ -21,7 +21,7 @@ const Index = () => {
             </div>
           </div>
           <Divider />
-          <div className=' w-250 flex justify-center' >
+          <div className=' w-250 flex justify-center'>
             <Input className="w-80%" placeholder="请输入"></Input>
             <Button type="primary" className="ml-5">发送</Button>
           </div>

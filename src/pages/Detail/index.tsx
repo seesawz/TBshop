@@ -7,6 +7,7 @@ import {throttle} from '@/utils/index'
 import { getToken } from '@/utils/token'
 import {useAppSelector} from '@/store/index'
 import Magnifier from '@/components/magnifier/index'
+import Remark from './Remark/index' 
 const Index = () => {
     const userInfo = useAppSelector(state => (state as any).user.userInfo)
     const [search] = useSearchParams()
@@ -149,6 +150,11 @@ const Index = () => {
                     </div>
                 </div>
             </div>
+            <br/> 
+            <div className='flex justify-center'>
+            {/* 评论区 */}
+            <Remark></Remark>
+        </div>
         </div>
     )
 }
