@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { InputNumber, Button, Divider, Select, Form, Space, message } from 'antd'
+import { InputNumber, Button, Divider, Input, Form, Space, message } from 'antd'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { addShoppingCart, selectSingleGoods } from '@/api'
 import type { Goods } from '@/utils/type'
@@ -7,8 +7,10 @@ import {throttle} from '@/utils/index'
 import { getToken } from '@/utils/token'
 import {useAppSelector} from '@/store/index'
 import Magnifier from '@/components/magnifier/index'
-import Remark from './Remark/index' 
+import Remark from './components/Remark/index' 
 const Index = () => {
+    const { TextArea } = Input;
+
     const userInfo = useAppSelector(state => (state as any).user.userInfo)
     const [search] = useSearchParams()
     const [token ,setoken] = useState<string>('')
@@ -151,10 +153,21 @@ const Index = () => {
                 </div>
             </div>
             <br/> 
+            <h3>评论区</h3>
+            <br></br>
             <div className='flex justify-center'>
             {/* 评论区 */}
-            <Remark></Remark>
-        </div>
+             <Remark></Remark>
+            </div>
+            <div className='ml-25'>
+            <br></br>
+            <Space>
+             <Input className='w-50' placeholder='发表你的评论'></Input>
+                <Button type="primary" ghost>发表</Button>
+            </Space>
+            </div>
+             <br></br>
+             <br></br>
         </div>
     )
 }

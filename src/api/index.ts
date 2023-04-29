@@ -119,3 +119,22 @@ export const getHistorySearch = () => hyRequest.post<Result>({
         key:'history'
     }
 })
+
+
+
+//客服模块
+
+export const already = (id: string) => hyRequest.get<Result>({
+    url:`/audit/member/sessionList/already?id=${id}`,
+})
+
+export const createSession = (obj:{
+    userId:string,
+    userName:string,
+    adminId:string,
+}) => hyRequest.get<Result>({
+    url:`/audit/member/sessionList/createSession?id=${obj.userId}&toUserId=${obj.adminId}&toUserName=${obj.userName}`,
+})
+export const selectUserRoleList = () => hyRequest.get<Result>({
+    url:`/audit/member/user/selectUserRoleList?roleCode=admin`,
+})
