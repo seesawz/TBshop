@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react'
-import { Card,Divider,Input,Space,Button } from 'antd';
+import React, {useEffect, useLayoutEffect} from 'react'
+import { Card,Divider,Input,Space,Button,message as msg } from 'antd';
 import Message from './component/Message';
-import { already,createSession,selectUserRoleList } from '@/api/index';
+import { already,createSession,selectUserRoleList,msgInfo } from '@/api/index';
 import {useAppSelector} from '@/store/index'
 import {useInput} from '@/Hooks/useInput'
 const Index = () => {
@@ -15,22 +15,36 @@ const Index = () => {
      */
     
      interface IconnectInfo {
-      id: number
+      id: string
       listName: string
       toUserId: string
       unReadCount: number
       userId: string
     }
-    type IMsg = {
-            name: string
-            message:string
-            isMe: boolean
-        }
-    const [msgList,setMsgList] = React.useState<IMsg[]>([])
+ type IMsg = Root2[]
+
+ interface Root2 {
+  content: string
+  createTime: string
+  fromUserId: string
+  fromUserName: string
+  id: number
+  toUserId: string
+  toUserName: string
+  unReadFlag: number
+}
+    const [msgList,setMsgList] = React.useState<IMsg>([])
     const [adminInfo,setAdminInfo] = React.useState<any>({})
     const [connectInfo,setConnectInfo] = React.useState<IconnectInfo>()
-    const getHistoryChat = () => {
-    
+    const [messageApi, contextHolder] = msg.useMessage()
+    const getHistoryChat = (id: string) => {
+        msgInfo(id).then(res=>{
+                if(res.code === 0){
+                        console.log("历史记录",res);
+                        setMsgList(res.data)
+                    }
+            })
+        //scrollToBottom()
         } 
     const message = useInput() 
     const [ws, setWs] = React.useState<any>(null)   
@@ -51,7 +65,12 @@ const Index = () => {
                     ws.addEventListener('open', ()=>{
                             console.log("连接成功");
                         })
-                    getHistoryChat()
+                    ws.addEventListener('message', (e: any) => {
+                    console.log("接收到消息",e);
+                    getHistoryChat(res.data[0]?.id)
+                    
+                })
+                    getHistoryChat(res.data[0]?.id)
                 }
         }
         })
@@ -83,30 +102,55 @@ const Index = () => {
 
     //发送消息
     const sendMsg = () => {
-            console.log(message);
-            setMsgList([...msgList as IMsg[],{name: user.userName,message: message.value,isMe:true}]) 
+        if(message.value === "" || message.value === null){
+                messageApi.warning('消息不能为空')
+                return
+            }
+            ws.send(message.value)
+            getHistoryChat(connectInfo?.id as string)
+           message.setValue('')    
         }
+    const enterSend =(e:KeyboardEvent | undefined) =>{
+           if(e?.key === 'Enter'){
+                sendMsg()
+               }
+            
+        }
+
+    //发送完消息滑动到底部
+     const scrollToBottom = () => {
+           const chatView:HTMLElement | null = document.getElementById('chatView') 
+           chatView?.scrollIntoView(false)
+    } 
         useEffect(() => {
             IsChating()
-
             },[])
+        useLayoutEffect(()=>{
+            scrollToBottom()
+            },[msgList])
+        useEffect(() => {
+              // return ws?.close()
+            })
   return (
     <div className='bg-#ededed h-screen'>
+        {contextHolder}
       <div className='flex justify-center'>
         <Card className='mt-5 shadow-xl flex ' bodyStyle={{ margin: 0, padding: 0 }}>
           <div className='h-150 w-100% overflow-auto'>
-            <div className="ml-2 mt-10 ">
+            <div className="ml-2 mt-10 " id="chatView">
               <Space direction={"vertical"} size={"large"}>
               {msgList?.map((item,index) => {
-                    return <Message key={index} name={item.name} message={item.message} reserve={item.isMe}></Message>
+                    return <Message key={index} content={item.content} 
+                    reverse={item.fromUserId === user.userId ? false : true}>
+                    </Message>
                   })}  
               </Space>
             </div>
           </div>
           <Divider />
           <div className=' w-250 flex justify-center'>
-            <Input value={message.value} onChange={message.onChange}  className="w-80%" placeholder="请输入"></Input>
-            <Button type="primary" className="ml-5" onClick={sendMsg}>发送</Button>
+            <Input value={message.value} onChange={message.onChange} onKeyUp={()=>{enterSend(event)}}  className="w-80%" placeholder="请输入"></Input>
+            <Button type="primary" className="ml-5" onClick={sendMsg} >发送</Button>
           </div>
           <br/>
         </Card>

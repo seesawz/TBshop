@@ -2,8 +2,7 @@ import React from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
 const Message = (props:any) => {
-        const {reverse = false} = props
-        console.log(reverse);
+        const {reverse,content} = props
         
     return(
       <div>
@@ -11,10 +10,10 @@ const Message = (props:any) => {
         <div >
             {/* 未反转状态 */}
             <div className='flex' >
-                <Avatar icon={<UserOutlined />} />
-                <div className="ml-5">
+                  <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>          
+                  <div className="ml-5">
                     <p className="bg-#f9d5b7 pl-2 pr-2  break-all max-w-50 border-solid border-gray-500 border-opacity-20  rd-2">
-                        你好，我是客服，有什么可以帮助你的吗?
+                      {content} 
                     </p>
                 </div>
             </div>
@@ -32,10 +31,10 @@ const Message = (props:any) => {
                     max-w-50
                     border-solid
                     border-gray-500 border-opacity-20  rd-2">
-                        你好，我是客服，有什么可以帮助你的吗?
+                        {content}
                     </p>
                 </div>
-                <Avatar icon={<UserOutlined />} />
+                  <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>          
             </div>
         </div>
     }

@@ -138,3 +138,8 @@ export const createSession = (obj:{
 export const selectUserRoleList = () => hyRequest.get<Result>({
     url:`/audit/member/user/selectUserRoleList?roleCode=admin`,
 })
+ 
+
+export const msgInfo = (id:string) => hyRequest.get<Result>({
+    url:`/audit/member/msgInfo/msgList?sessionId=${id}`,
+})
