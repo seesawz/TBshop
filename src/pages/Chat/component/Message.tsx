@@ -3,6 +3,8 @@ import { UserOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
 const Message = (props:any) => {
         const {reverse = false} = props
+        console.log(reverse);
+        
     return(
       <div>
       { reverse ?

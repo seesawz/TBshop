@@ -3,10 +3,10 @@ import { Card,Divider,Input,Space,Button } from 'antd';
 import Message from './component/Message';
 import { already,createSession,selectUserRoleList } from '@/api/index';
 import {useAppSelector} from '@/store/index'
+import {useInput} from '@/Hooks/useInput'
 const Index = () => {
     //从redux中获取用户信息
      const user = useAppSelector((state: any) => state.user.userInfo)
-     console.log(user)
     /* 
      *  const sockt = new WebSocket('ws://localhost:8080/ws')
      *  sockt.addEventListener('open', () => {
@@ -21,12 +21,18 @@ const Index = () => {
       unReadCount: number
       userId: string
     }
+    type IMsg = {
+            name: string
+            message:string
+            isMe: boolean
+        }
+    const [msgList,setMsgList] = React.useState<IMsg[]>([])
     const [adminInfo,setAdminInfo] = React.useState<any>({})
     const [connectInfo,setConnectInfo] = React.useState<IconnectInfo>()
     const getHistoryChat = () => {
     
         } 
-
+    const message = useInput() 
     const [ws, setWs] = React.useState<any>(null)   
     //判断是否已经在聊天
     const IsChating =  () => {
@@ -74,6 +80,12 @@ const Index = () => {
             })
 
         }
+
+    //发送消息
+    const sendMsg = () => {
+            console.log(message);
+            setMsgList([...msgList as IMsg[],{name: user.userName,message: message.value,isMe:true}]) 
+        }
         useEffect(() => {
             IsChating()
 
@@ -85,13 +97,16 @@ const Index = () => {
           <div className='h-150 w-100% overflow-auto'>
             <div className="ml-2 mt-10 ">
               <Space direction={"vertical"} size={"large"}>
+              {msgList?.map((item,index) => {
+                    return <Message key={index} name={item.name} message={item.message} reserve={item.isMe}></Message>
+                  })}  
               </Space>
             </div>
           </div>
           <Divider />
           <div className=' w-250 flex justify-center'>
-            <Input className="w-80%" placeholder="请输入"></Input>
-            <Button type="primary" className="ml-5">发送</Button>
+            <Input value={message.value} onChange={message.onChange}  className="w-80%" placeholder="请输入"></Input>
+            <Button type="primary" className="ml-5" onClick={sendMsg}>发送</Button>
           </div>
           <br/>
         </Card>
