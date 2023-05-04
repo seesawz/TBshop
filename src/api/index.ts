@@ -143,3 +143,19 @@ export const selectUserRoleList = () => hyRequest.get<Result>({
 export const msgInfo = (id:string) => hyRequest.get<Result>({
     url:`/audit/member/msgInfo/msgList?sessionId=${id}`,
 })
+
+//评论模块
+//查询
+export const  selectComment = (goodsId:string) => hyRequest.get<Result>({
+    url:`/audit/project/comment/selectComment/${goodsId}`,
+})
+//添加
+export const  addComment = (data:any) => hyRequest.post<Result>({
+    url:`/audit/project/comment/addComment`,
+    data
+})
+//删除      
+export const  deleteComment = (data:any) => hyRequest.delete<Result>({
+    url:`/audit/project/comment/deleteComment`,
+    data
+})

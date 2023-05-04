@@ -27,7 +27,7 @@ const index = () => {
     // 确认订单
     const submitOrder = async (order:any) => {
       console.log(order);
-      navigate('/pay',{state:{order}})
+      navigate('/pay',{state:{data:order}})
     }
 
     useEffect(()=>{

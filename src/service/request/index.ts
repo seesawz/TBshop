@@ -27,19 +27,19 @@ class HYRequest {
     //所有的实例都有的拦截器
     this.instance.interceptors.request.use(
       config => {
-        console.log('所有的实例都有的拦截器: 请求拦截成功')
+        //console.log('所有的实例都有的拦截器: 请求拦截成功')
         return config
       },
 
       err => {
-        console.log('所有的实例都有的拦截器: 请求拦截失败')
+        //console.log('所有的实例都有的拦截器: 请求拦截失败')
         return err
       }
     )
 
     this.instance.interceptors.response.use(
       res => {
-        console.log('所有的实例都有的拦截器: 响应拦截成功')
+        //console.log('所有的实例都有的拦截器: 响应拦截成功') 
         const { data } = res
         console.log(data)
         if (data.code === 1 && data.message === '用户未登录') {
@@ -59,7 +59,6 @@ class HYRequest {
 
       err => {
         console.log('所有的实例都有的拦截器: 响应拦截失败')
-
         //例子:判断不同httpErrorCode显示不同错误信息
 
         if (err.response.status === 404) {
@@ -74,26 +73,18 @@ class HYRequest {
   request<T>(config: HYRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       //单个请求对请求config的处理
-
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
       }
-
       this.instance
-
         .request<any, T>(config)
-
         .then(res => {
           //单个请求对数据的处理
-
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res)
           }
-
           console.log(res)
-
           //将结果返回出去
-
           resolve(res)
         })
 

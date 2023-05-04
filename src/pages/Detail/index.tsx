@@ -1,20 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { InputNumber, Button, Divider, Input, Form, Space, message } from 'antd'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { addShoppingCart, selectSingleGoods } from '@/api'
+import { addShoppingCart, selectSingleGoods, selectComment, addComment, deleteComment } from '@/api'
 import type { Goods } from '@/utils/type'
-import {throttle} from '@/utils/index'
+import { throttle } from '@/utils/index'
 import { getToken } from '@/utils/token'
-import {useAppSelector} from '@/store/index'
+import { useAppSelector } from '@/store/index'
 import Magnifier from '@/components/magnifier/index'
-import Remark from './components/Remark/index' 
+import Remark from './components/Remark/index'
+import { useInput } from "@/Hooks/useInput"
+import { reject } from 'lodash'
 const Index = () => {
     const { TextArea } = Input;
 
     const userInfo = useAppSelector(state => (state as any).user.userInfo)
     const [search] = useSearchParams()
-    const [token ,setoken] = useState<string>('')
+    const [token, setoken] = useState<string>('')
     const [goodsInfo, setGoodsInfo] = useState<Goods | null>(null)
+    const [remarkList, setRemarkList] = useState<any[]>([])
+    const pushRemark = useInput()
     const navigate = useNavigate()
     const form = useRef(null)
     const formItemLayout = {
@@ -26,19 +30,20 @@ const Index = () => {
         const result = await selectSingleGoods({ goodsId: id })
         if (result.code === 0) {
             setGoodsInfo(result.data)
-        }
+            getRemark(result.data)
+        } 
     }
     const toPay = () => {
-        if(token === undefined){
+        if (token === undefined) {
             message.info('请先登录')
-           navigate('/login')
+            navigate('/login')
             return
         }
         const Form: any = form.current
         const { number } = Form.getFieldsValue()
-        const data:Goods = goodsInfo!
+        const data: Goods = goodsInfo!
         data.number = number
-        navigate('/pay',{state:{data}})
+        navigate('/pay', { state: { data } })
     }
     const check = (e: React.FocusEvent<HTMLInputElement, Element>) => {
         const patt1 = new RegExp(/^[1-9]*[0-9][0-9]*$/)
@@ -51,36 +56,79 @@ const Index = () => {
         }
     }
 
-    const addCart = throttle(  async() => {        
-        if(token === undefined){
+    const addCart = throttle(async () => {
+        if (token === undefined) {
             message.info('请先登录')
-           navigate('/login')
+            navigate('/login')
             return
         }
-         const data = {
+        const data = {
             spuId: goodsInfo?.goodsId,
             spuName: goodsInfo?.spuName,
             spuImg: goodsInfo?.spuImgUrl,
-            number:'',
-            price:goodsInfo?.price,
-            spuDescription:goodsInfo?.spuDescription,
-            memberId:userInfo.userId
+            number: '',
+            price: goodsInfo?.price,
+            spuDescription: goodsInfo?.spuDescription,
+            memberId: userInfo.userId
         }
         const Form: any = form.current
         const { number } = Form.getFieldsValue()
         data.number = number
         const result = await addShoppingCart(data)
-        if(result.code === 0){
+        if (result.code === 0) {
             message.success('加入购物车成功')
-        } 
-    },500)
+        }
+    }, 500)
+    //查询评论
+    const getRemark = async (info:Goods) => {
+        const result = await selectComment(info!.goodsId)
+        if (result.code === 0) {
+            setRemarkList(result.data)
+        }
+    }
+    //发布评论
+    const postComments = () => {
+        if (pushRemark.value === '' || pushRemark.value === undefined) {
+            message.warning('请输入评论内容')
+            return
+        }
+        const data = {
+            "nickname": userInfo.userName, //用户名
+            "content": pushRemark.value,  //评论内容
+            "blogId": goodsInfo?.goodsId,    //商品ID
+            "avatar": null    //头像
+        }
+        addComment(data).then(res=>{
+            if(res.code === 0){
+                message.success('评论成功')
+                getRemark(goodsInfo!)
+                pushRemark.setValue('')
+            }
+        }).catch(err => console.log(err));
+    }
+    const submitDelete = (item:any) => {
+        const data = {
+            userId: userInfo.userId,
+            id: item.id
+        }
+       deleteComment(data).then(res=>{
+        if(res.code === 0){
+            message.success('删除成功')
+            getRemark(goodsInfo!)
+        }else{
+            message.error('删除失败')
+        }
+       }).catch(err => {
+        message.error('删除失败')
+       })
+    }
 
-    useEffect(() => {
+    useEffect(()=> {
         getGoodsInfo()
-        const a:string = getToken() as string
+        const a: string = getToken() as string
         setoken(a)
     }, [])
-
+   
 
     return (
         <div className='h-screen ml-20'>
@@ -94,7 +142,7 @@ const Index = () => {
                                 src={`http://43.139.230.109:9002/img/${goodsInfo?.spuImgUrl.split("/").at(-1)}`} alt="" />}
                     </div> */}
                     <div className='flex justify-center mt-20'>
-                    {goodsInfo?.projectAttachList && <Magnifier images={goodsInfo?.projectAttachList}></Magnifier>}
+                        {goodsInfo?.projectAttachList && <Magnifier images={goodsInfo?.projectAttachList}></Magnifier>}
                     </div>
                 </div>
                 <div className='flex-1'>
@@ -109,7 +157,7 @@ const Index = () => {
                         <Form
                             ref={form}
                         >
-                           {/*  <Form.Item
+                            {/*  <Form.Item
                                 {...formItemLayout}
                                 label="size">
                                 <Select
@@ -129,7 +177,7 @@ const Index = () => {
                                 name='number'
                                 initialValue="1"
                                 label="数量">
-                                <InputNumber  min={1} max={goodsInfo?.number} step={1} onBlur={(e) => { check(e) }}></InputNumber>
+                                <InputNumber min={1} max={goodsInfo?.number} step={1} onBlur={(e) => { check(e) }}></InputNumber>
                             </Form.Item>
                         </Form>
                         <br />
@@ -144,30 +192,35 @@ const Index = () => {
                         </div>
                         <br />
                         <Space>
-                      
+
                             <Button type="primary" onClick={addCart} ghost style={{ width: '100%' }} >加入购物车</Button>
                             <Button type="primary" onClick={toPay} danger ghost style={{ width: '100%' }} >立即购买</Button>
-                           
+
                         </Space>
                     </div>
                 </div>
             </div>
-            <br/> 
+            <br />
             <h3>评论区</h3>
             <br></br>
             <div className='flex justify-center'>
-            {/* 评论区 */}
-             <Remark></Remark>
+                {/* 评论区 */}
+                <Remark submitDelete={submitDelete} remark={remarkList}></Remark>
             </div>
             <div className='ml-25'>
-            <br></br>
-            <Space>
-             <Input className='w-50' placeholder='发表你的评论'></Input>
-                <Button type="primary" ghost>发表</Button>
-            </Space>
+                <br></br>
+                <Space>
+                    <Input value={pushRemark.value} 
+                     onChange={pushRemark.onChange} 
+                     className='w-50' 
+                     placeholder='发表你的评论'
+                     onKeyUp={(e) => {if(e.key === 'Enter'){postComments()}}}
+                     ></Input>
+                    <Button type="primary" ghost onClick={postComments}>发表</Button>
+                </Space>
             </div>
-             <br></br>
-             <br></br>
+            <br></br>
+            <br></br>
         </div>
     )
 }

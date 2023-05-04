@@ -14,7 +14,7 @@ const Index = () => {
      *      })
      */
     
-     interface IconnectInfo {
+     interface IconnectInfo{
       id: string
       listName: string
       toUserId: string
@@ -110,7 +110,7 @@ const Index = () => {
             getHistoryChat(connectInfo?.id as string)
            message.setValue('')    
         }
-    const enterSend =(e:KeyboardEvent | undefined) =>{
+    const enterSend =(e: React.KeyboardEvent<HTMLInputElement>) =>{
            if(e?.key === 'Enter'){
                 sendMsg()
                }
@@ -149,7 +149,7 @@ const Index = () => {
           </div>
           <Divider />
           <div className=' w-250 flex justify-center'>
-            <Input value={message.value} onChange={message.onChange} onKeyUp={()=>{enterSend(event)}}  className="w-80%" placeholder="请输入"></Input>
+            <Input value={message.value} onChange={message.onChange} onKeyUp={(e)=>{ enterSend(e) }}  className="w-80%" placeholder="请输入"></Input>
             <Button type="primary" className="ml-5" onClick={sendMsg} >发送</Button>
           </div>
           <br/>
