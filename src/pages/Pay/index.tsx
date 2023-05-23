@@ -11,9 +11,8 @@ const index = () => {
     const navigate = useNavigate()
     const Info = location.state?.data
     const description = 'Welcome!';
-    console.log("Info",Info);
     const onFinish = async () => {
-        const data: any = form.current!.getFieldsValue()
+        const data = ((form.current) as any).getFieldsValue()
         const result = await buyGoods({ ...data, ...location.state.data })
         if (result.code === 0) {
             message.success('下单成功')

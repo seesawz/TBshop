@@ -9,7 +9,6 @@ import img3 from '@/assets/3.jpeg'
 import img4 from '@/assets/4.jpeg'
 import Shopitem from "@/pages/Shopitem";
 import { useproThemeContext } from "@/theme/hooks";
-
 import { getToken } from '@/utils/token'
 import { getHistorySearch, saveHistoryRecord, selectAllGoodsCategory, selectPolicy } from "@/api";
 import { Page } from "@/utils/type";

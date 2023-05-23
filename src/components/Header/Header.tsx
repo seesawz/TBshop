@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './Header.module.css'
-import { Modal, notification,Tooltip } from 'antd'
+import { message, Modal, notification,Tooltip } from 'antd'
 import { UserOutlined, ShoppingCartOutlined, IssuesCloseOutlined, QuestionCircleOutlined,HomeOutlined } from '@ant-design/icons';
 import { useproThemeContext } from '@/theme/hooks'
 import img1 from '@/assets/12/headerbg1.png'
@@ -60,7 +60,8 @@ const Header = () => {
         const result = await userLogout()
         if(result.code === 0){
             resetToken()
-            window.location.reload()
+            navigate('/')
+            message.info('退出成功')
         }
     }
     return (
