@@ -8,7 +8,7 @@
     margin-left: 10px;
     margin-top: 20px;
 }
-.shoplist:last-child:nth-child(4n - 1) {
+.shoplist:last-child:nth-child(3n - 1) {
     margin-right: calc(24% + 4% / 3);
 }
 /* 如果最后一行是2个元素 */
@@ -21,7 +21,7 @@
     border-radius: 10px;
     position: absolute;
     margin-left: 10px;
-    margin-top: 10px;
+    margin-top: 10px;   
     object-fit: cover;
 }
 .shoptitle {

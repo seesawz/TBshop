@@ -21,6 +21,11 @@ const Index = () => {
     pageSize: 4,
     total: 0
   })
+  const [policyPage, setPolicyPage] = useState<Page>({
+    pageNo: 1,
+    pageSize: 4,
+    total: 0
+  })
   const [contentOpen, seContentOpen] = useState<boolean>(false)
   const [policyContent, setPolicyContent] = useState<string>('')
   const [searchWords, setSearchWords] = useState('')
@@ -102,10 +107,11 @@ const Index = () => {
     width: '600px'
   };
   const getPolicy = async () => {
-    const result = await selectPolicy(page)
+    const result = await selectPolicy(policyPage)
     if (result.code === 0) {
+      setPolicyPage({...policyPage,total:parseInt(result.data.recordsTotal)})
       setPolicyList(result.data.data)
-    }
+    } 
   }
   const showPolicyContent = (policy: any) => {
     seContentOpen(true)
@@ -120,12 +126,18 @@ const Index = () => {
     if (result.code === 0) {
       setClassification(result.data.data.slice(0, 16))
     }
-
+  }
+  const policyChange = (page: number) => {
+    setPolicyPage({...policyPage,pageNo:page})
   }
   useEffect(() => {
-    getPolicy()
     getClassification()
   }, [])
+
+  useEffect(() => {
+    getPolicy()
+  }, [policyPage.pageNo])
+
   return (
     <div className="bg-#E7E2E0">
       <div className={styles.shopinfo}>
@@ -241,7 +253,7 @@ const Index = () => {
                     <Button size="large" type="primary" danger onClick={showUserLoginForin}>注册</Button>
                   </div>
                 </div> :
-                  <div className="w-60 mt-0 cursor-pointer -ml-35 overflow-hidden">
+                  <div className="w-60 relative -mt-5 cursor-pointer -ml-25 overflow-hidden">
                     <Divider orientation="left" ><span className="color-rose-400">惠民政策</span></Divider>
                     <List
                       size="large"
@@ -251,12 +263,21 @@ const Index = () => {
                         <List.Item
                           onClick={() => showPolicyContent(policy)}
                           className={idx === policyList.length - 1 ? styles.animate : ''}
-                          style={{ display: idx < 4 ? '' : 'none' }}
                           key={policy.id}>
                           {policy.title}</List.Item>
                       )
                       }
                     />
+                    <br />
+                    <br />
+                     <Pagination 
+                     className="absolute bottom-0 left-0 "
+                     size="small" 
+                     current={policyPage.pageNo} 
+                     total={policyPage.total}
+                     pageSize={policyPage.pageSize} 
+                     onChange={policyChange}
+                     /> 
                   </div>
                 }
               </div>

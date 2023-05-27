@@ -43,17 +43,17 @@ const index = () => {
         }
     }
     const confirm = async () => {
-        setUserDetail({ ...userDetail, becauseReason:result })
+        setUserDetail({ ...userDetail, becauseReason: result })
         const data = userDetail
         data.becauseReason = result
-        
+
         const res = await applyDealer(data)
         if (res.code === 0) {
             message.success('申请成功')
         } else {
             message.info(res.message)
         }
-        setResultOpen(false) 
+        setResultOpen(false)
     };
 
 
@@ -95,8 +95,8 @@ const index = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-    const deleteMyOrder = async (id:string) => {
-        const result = await deleteOrder(id)
+    const deleteMyOrder = async (record: any) => {
+        const result = await deleteOrder(record?.id)
         if (result.code === 0) {
             message.success('删除成功')
             getOrder()
@@ -157,12 +157,12 @@ const index = () => {
             </Modal>
             <div className='shadow w-3xl flex justify-center '>
                 <Card style={{ width: '100%' }}>
-                    <Avatar className="relative" size={64} 
-                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+                    <Avatar className="relative" size={64}
+                        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
                     </Avatar>
                     {userDetail?.roleName ? <Tag className="absolute top-3" color="magenta">经销商</Tag> : <></>}
                     <span className='ml-10 color-gray-600'>
-                        这是我的个人描述巴拉巴拉，这是我的个人描述巴拉巴拉，这是我的个人描述巴拉巴拉
+
                     </span>
                     <p className='text-2xl font-500'>{userInfo.userName}</p>
                     <Space>
@@ -173,7 +173,7 @@ const index = () => {
                     </Space>
                     <br />
                     <br />
-                        <p>我的订单&nbsp;&nbsp;&nbsp;</p>
+                    <p>我的订单&nbsp;&nbsp;&nbsp;</p>
                     {orderList?.map((item, idx) => {
                         return (
                             <Card key={idx} size="small" className="mt-10">
@@ -190,14 +190,14 @@ const index = () => {
                                     </Col>
                                     <Col span={4}>  <span>总价:¥{item.totalAmount}</span></Col>
                                     <Col span={5}>
-                                       <Space>
-                                           {item.status === '0' ?
-                                             <Button type="primary" danger className="mt-1" onClick={() => { payOrder(item) }}>付款</Button>
-                                             :
-                                             <Button type="primary" disabled={true} danger className="mt-1" >已付款</Button>
-                                           }
-                                           <Button onClick={() => {deleteMyOrder(item.orderSn)}}>删除</Button>
-                                       </Space>
+                                        <Space>
+                                            {item.status === '0' ?
+                                                <Button type="primary" danger className="mt-1" onClick={() => { payOrder(item) }}>付款</Button>
+                                                :
+                                                <Button type="primary" disabled={true} danger className="mt-1" >已付款</Button>
+                                            }
+                                            <Button onClick={() => { deleteMyOrder(item) }}>删除</Button>
+                                        </Space>
                                     </Col>
                                 </Row>
                             </Card>
